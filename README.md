@@ -4,9 +4,17 @@ Automatically show the cost of rides by your vehicle in the Google Maps list of 
 
 \* Automatic detection of the average fuel price is currently available only in Slovakia
 
-## List of directions
+## Browser extensions
+
+[Firefox](https://addons.mozilla.org/en-US/firefox/addon/cost-of-driving-in-google-maps/) |
+-- |
+[![Firefox](https://github.com/alrra/browser-logos/raw/main/src/firefox/firefox_128x128.png)](https://addons.mozilla.org/en-US/firefox/addon/cost-of-driving-in-google-maps/) |
+
+## Screenshots
+
+### List of directions
 ![Screenshot 1](screenshot-1.jpg)
-## Options for diesel vehicles
+### Options for diesel vehicles
 ![Screenshot 2](screenshot-2.jpg)
-## Options for electric vehicles
+### Options for electric vehicles
 ![Screenshot 3](screenshot-3.jpg)
