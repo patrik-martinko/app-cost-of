@@ -9,7 +9,7 @@
         var price;
         var element = document.querySelector('#pane');
         var render = function () {
-            document.querySelectorAll('div.xB1mrd-T3iPGc-trip-tUvA6e div').forEach(function (distanceElement) {
+            document.querySelectorAll('div.xB1mrd-T3iPGc-trip div, div.xB1mrd-T3iPGc-trip-tUvA6e div, div.xB1mrd-T3iPGc-iSfDt-tUvA6e div').forEach(function (distanceElement) {
                 if (distanceElement.textContent.indexOf('(') === -1) {
                     var distance = distanceElement.textContent.replace(' km', '').replace(',', '.');
                     if (options.type === 'electric') {
