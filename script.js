@@ -10,13 +10,19 @@
         var element = document.querySelector('#pane');
         var render = function () {
             document.querySelectorAll('div.xB1mrd-T3iPGc-trip div, div.xB1mrd-T3iPGc-trip-tUvA6e div, div.xB1mrd-T3iPGc-iSfDt-tUvA6e div').forEach(function (distanceElement) {
-                if (distanceElement.textContent.indexOf('(') === -1) {
-                    var distance = distanceElement.textContent.replace(' km', '').replace(',', '.');
+                var distance = distanceElement.textContent;
+                if (distance.indexOf('(') === -1) {
+                    var dividing = distance.indexOf(' m') !== -1 ? 1000 : 1;
+                    distance = distance.replace(/[km\s]/g, '');
+                    if ([distance.length - 2, distance.length - 3].includes(distance.indexOf(','))) {
+                        distance = distance.replace(',', '.');
+                    }
+                    distance = distance.replace(',', '');
                     if (options.type === 'electric') {
-                        distanceElement.textContent += ' (' + (distance * options.consumptionElectric * options.priceElectric).toFixed(2) + ' €)';
+                        distanceElement.textContent += ' (' + (distance / dividing * options.consumptionElectric * options.priceElectric).toFixed(2) + ' €)';
                         distanceElement.setAttribute('title', options.priceElectric + ' €/kWh');
                     } else {
-                        distanceElement.textContent += ' (' + (distance / 100 * options.consumption * price).toFixed(2) + ' €)';
+                        distanceElement.textContent += ' (' + (distance / dividing / 100 * options.consumption * price).toFixed(2) + ' €)';
                         distanceElement.setAttribute('title', price + ' €/' + (options.type === 'cng' ? 'kg' : 'l'));
                     }
                 }
