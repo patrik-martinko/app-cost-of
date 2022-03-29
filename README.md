@@ -17,8 +17,8 @@ The extension automatically calculates and shows the approximate cost of a trip 
 ## Screenshots
 
 ### List of routes
-![Screenshot 1](screenshot-1.jpg)
+![Screenshot 1](extension/screenshot-1.jpg)
 ### Options for diesel vehicles
-![Screenshot 2](screenshot-2.jpg)
+![Screenshot 2](extension/screenshot-2.jpg)
 ### Options for electric vehicles
-![Screenshot 3](screenshot-3.jpg)
+![Screenshot 3](extension/screenshot-3.jpg)
