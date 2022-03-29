@@ -17,13 +17,19 @@ const updateCountry = function () {
 	}
 };
 selectCountry.onchange = updateCountry;
-get('https://ip2c.org/self', function (request) {
-	const country = request.target.responseText.split(';')[1];
-	if (country) {
-		selectCountry.value = country;
-		updateCountry();
-	}
-});
+if (!localStorage.getItem('country')) {
+	get('https://ip2c.org/self', function (request) {
+		const country = request.target.responseText.split(';')[1];
+		if (country) {
+			selectCountry.value = country;
+			updateCountry();
+			localStorage.setItem('country', country);
+		}
+	});
+} else {
+	selectCountry.value = localStorage.getItem('country');
+	updateCountry();
+}
 get('https://script.google.com/macros/s/AKfycby5CcRVznevNoWZeexy0m1DSeOX4Kg1FeMgxFdXlr4sySwgehnIr4T23Q5ooWDtR1iB/exec', function (request) {
 	data = JSON.parse(request.target.responseText);
 	updateCountry();
