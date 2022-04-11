@@ -116,6 +116,54 @@
 			</footer>
 		</div>
 	</main>
+	<script type="module">
+		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+		import { getAuth, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailLink, isSignInWithEmailLink } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+		import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js';
+		const config = {
+			apiKey: "AIzaSyDW0tyQQHS2NBu7dX7iMlpyrflqUOBtndE",
+			authDomain: "cost-of-app.firebaseapp.com",
+			databaseURL: "https://cost-of-app-default-rtdb.firebaseio.com",
+			projectId: "cost-of-app",
+			storageBucket: "cost-of-app.appspot.com",
+			messagingSenderId: "630278657376",
+			appId: "1:630278657376:web:688c632f68d469960a3a05"
+		};
+		const app = initializeApp(config);
+		const auth = getAuth(app);
+		// sendSignInLinkToEmail(auth, email, {
+		// 	url: 'https://costof.app',
+		// 	handleCodeInApp: true
+		// }).then(() => {
+		// 	// The link was successfully sent. Inform the user.
+		// 	// Save the email locally so you don't need to ask the user for it again
+		// 	// if they open the link on the same device.
+		// 	window.localStorage.setItem('email', email);
+		// 	// ...
+		// }).catch((error) => {
+		// 	const errorCode = error.code;
+		// 	const errorMessage = error.message;
+		// 	console.log(error);
+		// });
+		// signInWithEmailLink(auth, email, window.location.href)
+		// 	.then((result) => {
+		// 		// Clear email from storage.
+		// 		window.localStorage.removeItem('email');
+		// 		// You can access the new user via result.user
+		// 		// Additional user info profile not available via:
+		// 		// result.additionalUserInfo.profile == null
+		// 		// You can check if the user is new or existing:
+		// 		// result.additionalUserInfo.isNewUser
+		// 	})
+		// 	.catch((error) => {
+		// 		// Some error occurred, you can inspect the code: error.code
+		// 		// Common errors could be invalid email and invalid or expired OTPs.
+		// 		console.log(error);
+		// 	});
+		onAuthStateChanged(auth, (user) => {
+			console.log(user);
+		});
+	</script>
 	<script src="website/script.js"></script>
 </body>
 
