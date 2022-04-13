@@ -25,8 +25,8 @@
 					<h2>Automatically show the cost of rides by your vehicle in the Google Maps' list of routes based on the current average fuel price.</h2>
 					<p class="col-md-8 fs-4">The extension automatically calculates and shows the approximate cost of a trip for electric or classic (combustion) vehicles based on the current average price of fuel or energy, the distance of the route, and the average consumption of your vehicle.</p>
 					<div class="row">
-						<div class="col-md-7">
-							<form class="col-md-8">
+						<div class="col-md-6">
+							<form class="">
 								<div class="mb-3">
 									<label for="country" class="form-label">Select the country where you refuel</label>
 									<select id="country" class="form-select" aria-label="country">
@@ -58,14 +58,22 @@
 										<option value="ES">Spain</option>
 										<option value="SE">Sweden</option>
 									</select>
+									<label for="type" class="form-label">Fuel source</label>
+									<select id="type" class="form-select">
+										<option value="gasoline-95">Gasoline 95 octan</option>
+										<option value="diesel">Diesel</option>
+										<option value="lpg">LPG</option>
+										<option value="electricity">Electricity</option>
+									</select>
 								</div>
 							</form>
 							<div class="d-grid">
-								<button class="btn btn-primary col-md-8" type="button">Set your vehicle</button>
+								<button class="btn btn-primary" type="button">Set your vehicle</button>
 							</div>
 						</div>
-						<div class="col-md-5 mt-4 text-center">
-							<p class="mb-1">Current average fuel prices:</p>
+						<div id="data-current" class="col-md-6 mt-4 text-center">
+							<p class="mb-1">Current average fuel price <span id="selected-type"></span>:</p>
+							<p class="text-muted">Latest update: <span id="latest-update"></span></p>
 							<strong id="price" class="fs-1"></strong>
 						</div>
 					</div>
