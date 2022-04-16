@@ -15,7 +15,7 @@
 	<main>
 		<div class="container py-4">
 			<header class="pb-3 mb-4 border-bottom">
-				<a href="#" class="d-flex align-items-center text-dark text-decoration-none">
+				<a class="d-flex align-items-center text-dark text-decoration-none">
 					<img src="icon-32.png" alt="Cost of driving in Google Maps">
 					<span class="px-2 fs-4">Cost of transport</span>
 				</a>
@@ -70,6 +70,9 @@
 							<div class="d-grid">
 								<button class="btn btn-primary" type="button">Set your vehicle</button>
 							</div>
+							<p id="account" class="mt-2 text-center text-muted">
+								<a href="#" class="text-muted">(Sign in to your account)</a>
+							</p>
 						</div>
 						<div id="data-current" class="col-md-6 mt-4 text-center">
 							<p class="mb-1">Current average fuel price <span id="selected-type"></span>:</p>
@@ -170,7 +173,7 @@
 		// 		console.log(error);
 		// 	});
 		onAuthStateChanged(auth, (user) => {
-			console.log(user);
+			document.getElementById('account').innerHTML = user.email + ' <a href="#" class="text-muted">(Sign out)</a>';
 		});
 	</script>
 	<script src="website/script.js"></script>

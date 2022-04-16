@@ -24,7 +24,7 @@ const update = function () {
 			const country = selectCountry.options[selectCountry.selectedIndex].textContent;
 			document.getElementById('selected-type').textContent = '(' + selectType.options[selectType.selectedIndex].textContent + ')';
 			document.getElementById('latest-update').textContent = data[0][0];
-			for (const key in data) {
+			for (var key in data) {
 				if (data[key][0] == country) {
 					document.getElementById('price').textContent = data[key][selectType.selectedIndex + 1] + '€/l';
 				}
