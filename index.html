@@ -70,9 +70,7 @@
 							<div class="d-grid">
 								<button class="btn btn-primary" type="button">Set your vehicle</button>
 							</div>
-							<p id="account" class="mt-2 text-center text-muted">
-								<a href="#" class="text-muted">(Sign in to your account)</a>
-							</p>
+							<p id="account" class="mt-2 text-center"></p>
 						</div>
 						<div id="data-current" class="col-md-6 mt-4 text-center">
 							<p class="mb-1">Current average fuel price <span id="selected-type"></span>:</p>
@@ -130,7 +128,7 @@
 	</main>
 	<script type="module">
 		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-		import { getAuth, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailLink, isSignInWithEmailLink } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+		import { getAuth, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailLink, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 		import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js';
 		const config = {
 			apiKey: "AIzaSyDW0tyQQHS2NBu7dX7iMlpyrflqUOBtndE",
@@ -147,33 +145,23 @@
 		// 	url: 'https://costof.app',
 		// 	handleCodeInApp: true
 		// }).then(() => {
-		// 	// The link was successfully sent. Inform the user.
-		// 	// Save the email locally so you don't need to ask the user for it again
-		// 	// if they open the link on the same device.
-		// 	window.localStorage.setItem('email', email);
-		// 	// ...
-		// }).catch((error) => {
-		// 	const errorCode = error.code;
-		// 	const errorMessage = error.message;
-		// 	console.log(error);
+
 		// });
-		// signInWithEmailLink(auth, email, window.location.href)
-		// 	.then((result) => {
-		// 		// Clear email from storage.
-		// 		window.localStorage.removeItem('email');
-		// 		// You can access the new user via result.user
-		// 		// Additional user info profile not available via:
-		// 		// result.additionalUserInfo.profile == null
-		// 		// You can check if the user is new or existing:
-		// 		// result.additionalUserInfo.isNewUser
-		// 	})
-		// 	.catch((error) => {
-		// 		// Some error occurred, you can inspect the code: error.code
-		// 		// Common errors could be invalid email and invalid or expired OTPs.
-		// 		console.log(error);
-		// 	});
+		// signInWithEmailLink(auth, email, window.location.href).then((result) => {
+
+		// });
 		onAuthStateChanged(auth, (user) => {
-			document.getElementById('account').innerHTML = user.email + ' <a href="#" class="text-muted">(Sign out)</a>';
+			const buttonSignIn = '<a class="text-muted">(Sign in to your account)</a>';
+			if (user) {
+				document.getElementById('account').innerHTML = user.email + ' <a href="#" id="sign-out" class="text-muted">(Sign out)</a>';
+				document.getElementById('sign-out').onclick = () => {
+					signOut(auth).then(() => {
+						document.getElementById('account').innerHTML = buttonSignIn;
+					});
+				}
+			} else {
+				document.getElementById('account').innerHTML = buttonSignIn;
+			}
 		});
 	</script>
 	<script src="website/script.js"></script>
