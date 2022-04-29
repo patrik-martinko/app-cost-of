@@ -11,7 +11,6 @@
 </head>
 
 <body>
-
 	<main>
 		<div class="container py-4">
 			<header class="pb-3 mb-4 border-bottom">
@@ -126,6 +125,24 @@
 			</footer>
 		</div>
 	</main>
+	<div id="modal" class="modal" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Modal title</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>Modal body text goes here.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	<script type="module">
 		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 		import { getAuth, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailLink, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
@@ -145,10 +162,8 @@
 		// 	url: 'https://costof.app',
 		// 	handleCodeInApp: true
 		// }).then(() => {
-
 		// });
 		// signInWithEmailLink(auth, email, window.location.href).then((result) => {
-
 		// });
 		onAuthStateChanged(auth, (user) => {
 			const buttonSignIn = '<a class="text-muted">(Sign in to your account)</a>';
@@ -163,6 +178,7 @@
 				document.getElementById('account').innerHTML = buttonSignIn;
 			}
 		});
+		const modal = new bootstrap.Modal(document.getElementById('modal'));
 	</script>
 	<script src="website/script.js"></script>
 </body>
