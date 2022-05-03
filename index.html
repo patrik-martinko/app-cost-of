@@ -26,10 +26,10 @@
 					<p class="col-md-8 fs-4">The extension automatically calculates and shows the approximate cost of a trip for electric or classic (combustion) vehicles based on the current average price of fuel or energy, the distance of the route, and the average consumption of your vehicle.</p>
 					<div class="row">
 						<div class="col-md-6">
-							<form class="">
-								<div class="mb-3">
+							<form class="mb-3">
+								<div id="control-country">
 									<label for="country" class="form-label">Select the country where you refuel</label>
-									<select id="country" class="form-select" aria-label="country">
+									<select id="country" class="control form-select" aria-label="country">
 										<option value="AT">Austria</option>
 										<option value="BE">Belgium</option>
 										<option value="BG">Bulgaria</option>
@@ -58,17 +58,33 @@
 										<option value="ES">Spain</option>
 										<option value="SE">Sweden</option>
 									</select>
-									<label for="type" class="form-label">Fuel source</label>
-									<select id="type" class="form-select">
+								</div>
+								<div id="control-type">
+									<label for="type" class="form-label mt-2">Fuel source</label>
+									<select id="type" class="control form-select">
 										<option value="gasoline-95">Gasoline 95 octan</option>
 										<option value="diesel">Diesel</option>
 										<option value="lpg">LPG</option>
 										<option value="electricity">Electricity</option>
 									</select>
 								</div>
+								<div id="control-consumption" class="d-none">
+									<label for="consumption" class="form-label mt-2">Consumption of your vehicle</label>
+									<div class="input-group">
+										<input id="consumption" type="number" step="0.01" class="control form-control" aria-describedby="consumption">
+										<span class="input-group-text">l/100km</span>
+									</div>
+								</div>
+								<div id="control-consumption-electric" class="d-none">
+									<label for="consumption-electric" class="form-label mt-2">Consumption of your vehicle</label>
+									<div class="input-group">
+										<input id="consumption-electric" type="number" step="0.01" class="control form-control" aria-describedby="consumption-electric">
+										<span class="input-group-text">kWh/km</span>
+									</div>
+								</div>
 							</form>
 							<div class="d-grid">
-								<button class="btn btn-primary" type="button">Set your vehicle</button>
+								<button id="button-set" class="btn btn-primary" type="button">Set your vehicle</button>
 							</div>
 							<p id="account" class="mt-2 text-center"></p>
 						</div>
