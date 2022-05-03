@@ -1,9 +1,10 @@
 var data = null;
 var options = {
-	type: 'electric',
-	priceElectric: 0.1,
+	country: null,
+	type: 'gasoline-95',
+	consumption: 7,
 	consumptionElectric: 0.2,
-	consumption: 7
+	priceElectric: 0.1
 };
 const get = (url, load) => {
 	const request = new XMLHttpRequest();
@@ -33,9 +34,8 @@ const update = () => {
 	}
 };
 for (let control of controls) {
-	if (localStorage.getItem(control.getAttribute('id'))) {
-		control.value = localStorage.getItem(control.getAttribute('id'));
-	}
+	let id = control.getAttribute('id');
+	control.value = localStorage.getItem(id) ? localStorage.getItem(id) : options[id];
 	control.onchange = update;
 }
 // document.getElementById('country').prepend('<option>Detecting country</option>');
