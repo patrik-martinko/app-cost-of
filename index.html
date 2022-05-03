@@ -19,6 +19,7 @@
 					<span class="px-2 fs-4">Cost of transport</span>
 				</a>
 			</header>
+			<div id="alerts"></div>
 			<div class="p-5 mb-4 bg-light rounded-3">
 				<div class="container-fluid py-5">
 					<h2>Automatically show the cost of rides by your vehicle in the Google Maps' list of routes based on the current average fuel price.</h2>
@@ -136,7 +137,7 @@
 					<label for="email" class="form-label">Email address</label>
 					<input type="email" class="form-control" id="email" aria-describedby="email-help" placeholder="Email">
 					<div id="email-help" class="form-text">We'll never share your email with anyone else.</div>
-					<div id="alerts"></div>
+					<div id="modal-alerts"></div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -162,10 +163,17 @@
 		const app = initializeApp(config);
 		const auth = getAuth(app);
 		const modal = new bootstrap.Modal(document.getElementById('modal'));
+		const params = new URLSearchParams(document.location.search);
+		if (params.get('mode') && params.get('mode') === 'signIn' && localStorage.getItem('email')) {
+			signInWithEmailLink(auth, localStorage.getItem('email'), window.location.href).then(() => {
+				document.getElementById('alerts').innerHTML = '<div class="alert alert-success alert-dismissible mb-7" role="alert">You have been signed in.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+				window.history.pushState({}, '', '/');
+			});
+		}
 		onAuthStateChanged(auth, (user) => {
 			const initSignIn = () => {
 				const titleSignIn = 'Sign in to your account';
-				document.getElementById('account').innerHTML = '<a id="button-signin" href="" class="text-muted">(' + titleSignIn + ')</a>';
+				document.getElementById('account').innerHTML = '<a href="" id="button-signin" class="text-muted">(' + titleSignIn + ')</a>';
 				document.getElementById('button-signin').onclick = () => {
 					document.getElementById('modal-title').textContent = titleSignIn;
 					document.getElementById('modal-submit').textContent = 'Send sign-in link';
@@ -175,7 +183,7 @@
 							url: 'https://costof.app',
 							handleCodeInApp: true
 						}).then(() => {
-							document.getElementById('alerts').innerHTML = '<div class="alert alert-success alert-dismissible mt-2 mb-0" role="alert">Sign-in link has been sent to your email address.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+							document.getElementById('modal-alerts').innerHTML = '<div class="alert alert-success alert-dismissible mt-2 mb-0" role="alert">Sign-in link has been sent to your email address.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
 						});
 					}
 					modal.show();
@@ -183,17 +191,17 @@
 				}
 			};
 			if (user) {
-				document.getElementById('account').innerHTML = user.email + ' <a href="" id="sign-out" class="text-muted">(Sign out)</a>';
-				document.getElementById('sign-out').onclick = () => {
+				document.getElementById('account').innerHTML = user.email + ' <a href="" id="button-signout" class="text-muted">(Sign out)</a>';
+				document.getElementById('button-signout').onclick = () => {
 					signOut(auth).then(() => {
 						initSignIn();
 					});
+					return false;
 				}
 			} else {
 				initSignIn();
 			}
 		});
-		// signInWithEmailLink(auth, email, window.location.href).then((result) => {});
 	</script>
 	<script src="website/script.js"></script>
 </body>
