@@ -217,7 +217,7 @@
 				localStorage.setItem('setup', true);
 				setVisibility('button-setup', false);
 				setVisibility('button-save', true);
-				document.getElementById('account').innerHTML = user.email + ' <a href="" id="button-signout" class="text-muted">(Sign out)</a>';
+				document.getElementById('account').innerHTML = user.email + ' <a href="" id="button-signout" class="text-muted">(sign out)</a>';
 				document.getElementById('button-signout').onclick = () => {
 					signOut(auth).then(() => {
 						initSignIn();
