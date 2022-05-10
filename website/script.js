@@ -31,15 +31,20 @@ const update = () => {
 	if (data) {
 		if (get('type').value == 'electricity') {
 			setVisibility('data-current', false);
+			setVisibility('data-cost-100', true);
 			if (localStorage.getItem('setup')) {
 				setVisibility('control-consumption', false);
 				setVisibility('control-consumptionElectricity', true);
+				setVisibility('control-priceElectricity', true);
 			}
+			get('cost-100').textContent = (get('consumptionElectricity').value * get('priceElectricity').value * 100).toFixed(2) + '€';
 		} else {
 			setVisibility('data-current', true);
+			setVisibility('data-cost-100', true);
 			if (localStorage.getItem('setup')) {
 				setVisibility('control-consumption', true);
 				setVisibility('control-consumptionElectricity', false);
+				setVisibility('control-priceElectricity', false);
 			}
 			const country = get('country').options[get('country').selectedIndex].textContent;
 			get('selected-type').textContent = '(' + get('type').options[get('type').selectedIndex].textContent + ')';

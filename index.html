@@ -82,6 +82,13 @@
 										<span class="input-group-text">kWh/km</span>
 									</div>
 								</div>
+								<div id="control-priceElectricity" class="d-none">
+									<label for="priceElectricity" class="form-label mt-2">Price</label>
+									<div class="input-group">
+										<input id="priceElectricity" type="number" step="0.01" class="control form-control" aria-describedby="consumptionElectricity">
+										<span class="input-group-text">€/kWh</span>
+									</div>
+								</div>
 							</form>
 							<div class="d-grid">
 								<button id="button-setup" class="btn btn-primary d-none" type="button">Set up your vehicle</button>
@@ -89,13 +96,13 @@
 							</div>
 							<p id="account" class="mt-2 text-center"></p>
 						</div>
-						<div id="data-current" class="col-md-6 text-center d-none">
-							<div class="my-4">
+						<div class="col-md-6 text-center">
+							<div id="data-current" class="my-4 d-none">
 								<p class="mb-1">Current average fuel price <span id="selected-type"></span>:</p>
 								<p class="text-muted">Latest update: <span id="latest-update"></span></p>
 								<strong id="price" class="fs-1"></strong>
 							</div>
-							<div>
+							<div id="data-cost-100" class="d-none">
 								<p class="mb-1">Fuel cost of a 100km trip:</p>
 								<strong id="cost-100" class="fs-2"></strong>
 							</div>
