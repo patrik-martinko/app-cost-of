@@ -1,4 +1,5 @@
-(function () {
+if (location.host === 'costof.app') {
+} else {
     var options = {
         type: 'electric',
         priceElectric: 0.1,
@@ -59,4 +60,4 @@
     } else {
         chrome.storage.sync.get(options, get);
     }
-})();
+}

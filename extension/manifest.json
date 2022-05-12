@@ -12,6 +12,7 @@
     "content_scripts": [
         {
             "matches": [
+                "https://*.costof.app/*",
                 "https://*.google.com/maps/*",
                 "https://*.google.ad/maps/*",
                 "https://*.google.ae/maps/*",

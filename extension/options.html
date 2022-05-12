@@ -1,68 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cost of driving in Google Maps</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta http-equiv="refresh" content="0; url='https://costof.app'" />
 </head>
 
 <body>
-    <div class="container" style="max-width: 500px;">
-        <div class="py-5 text-center">
-            <h2>Cost of driving in Google Maps</h2>
-        </div>
-        <form>
-            <div id="control-type" class="row mb-3">
-                <label for="type" class="col-sm-4 col-form-label">Fuel source</label>
-                <div class="col-sm-8">
-                    <select id="type" class="form-select">
-                        <option value="electric">Electricity</option>
-                        <option value="gasoline-95">Gasoline 95 octan</option>
-                        <option value="gasoline-98">Gasoline 98 octan</option>
-                        <option value="lpg">LPG</option>
-                        <option value="diesel">Diesel</option>
-                        <option value="cng">CNG</option>
-                    </select>
-                </div>
-            </div>
-            <div id="control-price-electric" class="row mb-3">
-                <label for="price-electric" class="col-sm-4 col-form-label">Price</label>
-                <div class="col-sm-8">
-                    <div class="input-group">
-                        <input id="price-electric" type="number" step="0.01" class="form-control" aria-describedby="price-electric">
-                        <span class="input-group-text">€/kWh</span>
-                    </div>
-                </div>
-            </div>
-            <div id="control-consumption-electric" class="row mb-3">
-                <label for="consumption-electric" class="col-sm-4 col-form-label">Consumption</label>
-                <div class="col-sm-8">
-                    <div class="input-group">
-                        <input id="consumption-electric" type="number" step="0.01" class="form-control" aria-describedby="consumption-electric">
-                        <span class="input-group-text">kWh/km</span>
-                    </div>
-                </div>
-            </div>
-            <div id="control-consumption" class="row mb-3" style="display: none;">
-                <label for="consumption" class="col-sm-4 col-form-label">Consumption</label>
-                <div class="col-sm-8">
-                    <div class="input-group">
-                        <input id="consumption" type="number" step="0.01" class="form-control" aria-describedby="consumption">
-                        <span id="control-consumption-unit" class="input-group-text">l/100km</span>
-                    </div>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-12">
-                    <button id="save" class="btn btn-primary" style="width: 100%;">Save</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <script src="options.js"></script>
 </body>
 
 </html>
