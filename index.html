@@ -180,7 +180,7 @@
 	<script type="module">
 		import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 		import { getAuth, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailLink, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-		import { getFirestore, doc, setDoc } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js';
+		import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js';
 		var data = null;
 		var options = {
 			country: null,
@@ -207,51 +207,60 @@
 			request.send();
 		};
 		const controls = document.getElementsByClassName('control');
-		const update = () => {
-			for (let control of controls) {
-				localStorage.setItem(control.getAttribute('id'), control.value);
-			}
+		const input = (control, load) => {
+			let id = control.getAttribute('id');
+			options[id] = control.value;
+			localStorage.setItem(id, control.value);
+			try {
+				if (!load && auth.currentUser) {
+					setDoc(doc(db, 'options', auth.currentUser.email), options);
+				}
+			} catch (error) { }
 			if (data) {
-				if (get('type').value == 'electricity') {
-					setVisibility('data-current', false);
-					setVisibility('data-cost-100', true);
-					if (localStorage.getItem('setup')) {
-						setVisibility('control-consumption', false);
-						setVisibility('control-consumptionElectricity', true);
-						setVisibility('control-priceElectricity', true);
-					}
-					get('cost-100').textContent = (get('consumptionElectricity').value * get('priceElectricity').value * 100).toFixed(2) + '€';
-				} else {
-					setVisibility('data-current', true);
-					setVisibility('data-cost-100', true);
-					if (localStorage.getItem('setup')) {
-						setVisibility('control-consumption', true);
-						setVisibility('control-consumptionElectricity', false);
-						setVisibility('control-priceElectricity', false);
-					}
-					const country = get('country').options[get('country').selectedIndex].textContent;
-					get('selected-type').textContent = '(' + get('type').options[get('type').selectedIndex].textContent + ')';
-					get('latest-update').textContent = data[0][0];
-					for (let key in data) {
-						if (data[key][0] == country) {
-							const price = data[key][get('type').selectedIndex + 1];
-							get('price').textContent = price + '€/l';
-							get('cost-100').textContent = (get('consumption').value * price).toFixed(2) + '€';
-						}
+				update();
+			}
+		};
+		const update = () => {
+			if (get('type').value == 'electricity') {
+				setVisibility('data-current', false);
+				setVisibility('data-cost-100', true);
+				if (localStorage.getItem('setup')) {
+					setVisibility('control-consumption', false);
+					setVisibility('control-consumptionElectricity', true);
+					setVisibility('control-priceElectricity', true);
+				}
+				get('cost-100').textContent = (get('consumptionElectricity').value * get('priceElectricity').value * 100).toFixed(2) + '€';
+			} else {
+				setVisibility('data-current', true);
+				setVisibility('data-cost-100', true);
+				if (localStorage.getItem('setup')) {
+					setVisibility('control-consumption', true);
+					setVisibility('control-consumptionElectricity', false);
+					setVisibility('control-priceElectricity', false);
+				}
+				const country = get('country').options[get('country').selectedIndex].textContent;
+				get('selected-type').textContent = '(' + get('type').options[get('type').selectedIndex].textContent + ')';
+				get('latest-update').textContent = data[0][0];
+				for (let key in data) {
+					if (data[key][0] == country) {
+						const price = data[key][get('type').selectedIndex + 1];
+						get('price').textContent = price + '€/l';
+						get('cost-100').textContent = (get('consumption').value * price).toFixed(2) + '€';
 					}
 				}
 			}
 		};
 		for (let control of controls) {
 			let id = control.getAttribute('id');
-			control.value = localStorage.getItem(id) ? localStorage.getItem(id) : options[id];
-			control.onchange = update;
+			control.value = options[id] = localStorage.getItem(id) ? localStorage.getItem(id) : options[id];
+			control.addEventListener('input', (event) => {
+				input(event.target, false);
+			});
 		}
 		get('button-setup').onclick = () => {
 			localStorage.setItem('setup', true);
 			setVisibility('button-setup', false);
 			setVisibility('button-save', true);
-			update();
 		}
 		// get('country').prepend('<option>Detecting country</option>');
 		// if (!localStorage.getItem('country')) {
@@ -295,7 +304,7 @@
 			const initSignIn = () => {
 				const titleSignIn = 'Sign in to your account';
 				get('account').innerHTML = '<a href="" id="button-signin" class="text-muted">(' + titleSignIn + ')</a>';
-				get('button-signin').onclick = () => {
+				const signIn = () => {
 					get('modal-title').textContent = titleSignIn;
 					get('modal-submit').textContent = 'Send sign-in link';
 					get('modal-submit').onclick = () => {
@@ -309,21 +318,28 @@
 					}
 					modal.show();
 					return false;
-				}
+				};
+				setVisibility('button-save', true);
+				get('button-save').onclick = signIn;
+				get('button-signin').onclick = signIn;
 			};
 			if (user) {
-				localStorage.setItem('setup', true);
-				setVisibility('button-setup', false);
-				setVisibility('button-save', true);
 				get('account').innerHTML = user.email + ' <a href="" id="button-signout" class="text-muted">(sign out)</a>';
+				setVisibility('button-setup', false);
+				setVisibility('button-save', false);
+				localStorage.setItem('setup', true);
 				get('button-signout').onclick = () => {
 					signOut(auth).then(() => {
 						initSignIn();
 					});
 					return false;
 				}
-				// setDoc(doc(db, 'options', user.email), {
-				// });
+				getDoc(doc(db, 'options', user.email)).then((remote) => {
+					for (let control of controls) {
+						control.value = remote.data()[control.getAttribute('id')];
+						input(control, true);
+					}
+				});
 			} else {
 				initSignIn();
 			}
