@@ -92,7 +92,7 @@
 							</form>
 							<div class="d-grid">
 								<button id="button-setup" class="btn btn-primary d-none" type="button">Set up your vehicle</button>
-								<button id="button-save" class="btn btn-primary d-none" type="button">Save to your account</button>
+								<button id="button-save" class="btn btn-primary d-none" type="button">Save settings online to your account</button>
 							</div>
 							<p id="account" class="mt-2 text-center"></p>
 						</div>
@@ -302,10 +302,9 @@
 		}
 		onAuthStateChanged(auth, (user) => {
 			const initSignIn = () => {
-				const titleSignIn = 'Sign in to your account';
-				get('account').innerHTML = '<a href="" id="button-signin" class="text-muted">(' + titleSignIn + ')</a>';
-				const signIn = () => {
-					get('modal-title').textContent = titleSignIn;
+				setVisibility('button-save', true);
+				get('button-save').onclick = () => {
+					get('modal-title').textContent = 'Enter your email address';
 					get('modal-submit').textContent = 'Send sign-in link';
 					get('modal-submit').onclick = () => {
 						localStorage.setItem('email', get('email').value);
@@ -313,15 +312,12 @@
 							url: 'https://costof.app',
 							handleCodeInApp: true
 						}).then(() => {
-							get('modal-alerts').innerHTML = '<div class="alert alert-success alert-dismissible mt-2 mb-0" role="alert">Sign-in link has been sent to your email address.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+							get('modal-alerts').innerHTML = '<div class="alert alert-success alert-dismissible mt-2 mb-0" role="alert">Link has been sent to your email address.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
 						});
 					}
 					modal.show();
 					return false;
 				};
-				setVisibility('button-save', true);
-				get('button-save').onclick = signIn;
-				get('button-signin').onclick = signIn;
 			};
 			if (user) {
 				get('account').innerHTML = user.email + ' <a href="" id="button-signout" class="text-muted">(sign out)</a>';
