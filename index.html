@@ -200,12 +200,6 @@
 				element.setAttribute('class', element.getAttribute('class') + ' d-none');
 			}
 		};
-		const request = (url, load) => {
-			const request = new XMLHttpRequest();
-			request.addEventListener('load', load);
-			request.open('GET', url);
-			request.send();
-		};
 		const controls = document.getElementsByClassName('control');
 		const input = (control, load) => {
 			let id = control.getAttribute('id');
@@ -261,24 +255,40 @@
 			localStorage.setItem('setup', true);
 			setVisibility('button-setup', false);
 			setVisibility('button-save', true);
-			update();
+			input(get('country'), true);
 		}
-		// get('country').prepend('<option>Detecting country</option>');
-		// if (!localStorage.getItem('country')) {
-		// 	get('https://ip2c.org/self', function (request) {
-		// 		const country = request.target.responseText.split(';')[1];
-		// 		if (country) {
-		// 			selectCountry.value = country;
-		// 			update();
-		// 		}
-		// 	});
-		// } else {
-		// 	selectCountry.value = localStorage.getItem('country');
-		// 	update();
-		// }
-		request('https://script.google.com/macros/s/AKfycby5CcRVznevNoWZeexy0m1DSeOX4Kg1FeMgxFdXlr4sySwgehnIr4T23Q5ooWDtR1iB/exec', request => {
-			data = JSON.parse(request.target.responseText);
-			update();
+		var countryInit = false;
+		get('country').onclick = () => {
+			countryInit = true;
+			get('country').firstChild.remove();
+		};
+		if (!localStorage.getItem('country')) {
+			const option = document.createElement('option');
+			option.textContent = 'Detecting country...';
+			get('country').prepend(option);
+			fetch('https://api.ipregistry.co/?key=kpebi6wx7c0b7v6w').then(response => {
+				response.json().then(response => {
+					if (!countryInit) {
+						const control = get('country');
+						control.value = response.location.country.code;
+						control.firstChild.remove();
+						input(control, false);
+					}
+				});
+			}).catch(reason => {
+				countryInit = true;
+				get('country').firstChild.remove();
+				input(get('country'), false);
+			});
+		} else {
+			get('country').value = localStorage.getItem('country');
+			input(get('country'), false);
+		}
+		fetch('https://script.google.com/macros/s/AKfycby5CcRVznevNoWZeexy0m1DSeOX4Kg1FeMgxFdXlr4sySwgehnIr4T23Q5ooWDtR1iB/exec').then(response => {
+			response.json().then(json => {
+				data = json;
+				update();
+			});
 		});
 		get('copyright').innerHTML = '&copy; ' + (new Date()).getFullYear();
 		const config = {
