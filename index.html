@@ -24,7 +24,7 @@
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-md-8">
-							<h2 class="mb-5">Find out the current average fuel price in your country, calculate and automatically show the cost of rides by your vehicle directly in your map service.</h2>
+							<h2 class="mb-5">Find out the current average fuel price in your country, calculate and automatically show the costs of rides by your vehicle directly in your map service.</h2>
 						</div>
 					</div>
 					<div class="row">
@@ -105,9 +105,10 @@
 								<p class="text-muted">Latest update: <span id="latest-update"></span></p>
 								<strong id="price" class="fs-1"></strong>
 							</div>
-							<div id="data-cost-100" class="d-none">
-								<p class="mb-1">Fuel cost of a 100km trip:</p>
-								<strong id="cost-100" class="fs-2"></strong>
+							<div id="data-trip" class="d-none">
+								<p class="mb-1">Fuel cost of a <input id="trip" type="text" class="control form-control d-inline-block text-center"> km trip:
+								</p>
+								<strong id="cost-trip" class="fs-1"></strong>
 							</div>
 						</div>
 					</div>
@@ -191,7 +192,8 @@
 			type: 'gasoline-95',
 			consumption: 7,
 			consumptionElectricity: 0.2,
-			priceElectricity: 0.1
+			priceElectricity: 0.1,
+			trip: 100
 		};
 		const get = (id) => {
 			return document.getElementById(id);
@@ -225,8 +227,8 @@
 					setVisibility('control-consumption', false);
 					setVisibility('control-consumptionElectricity', true);
 					setVisibility('control-priceElectricity', true);
-					setVisibility('data-cost-100', true);
-					get('cost-100').textContent = (get('consumptionElectricity').value * get('priceElectricity').value * 100).toFixed(2) + '€';
+					setVisibility('data-trip', true);
+					get('cost-trip').textContent = (get('consumptionElectricity').value * get('priceElectricity').value * 100).toFixed(2) + '€';
 				}
 			} else {
 				setVisibility('data-current', true);
@@ -234,7 +236,7 @@
 					setVisibility('control-consumption', true);
 					setVisibility('control-consumptionElectricity', false);
 					setVisibility('control-priceElectricity', false);
-					setVisibility('data-cost-100', true);
+					setVisibility('data-trip', true);
 				}
 				const country = get('country').options[get('country').selectedIndex].textContent;
 				get('selected-type').textContent = '(' + get('type').options[get('type').selectedIndex].textContent + ')';
@@ -243,7 +245,7 @@
 					if (data[key][0] == country) {
 						const price = data[key][get('type').selectedIndex + 1];
 						get('price').textContent = price + '€/l';
-						get('cost-100').textContent = (get('consumption').value * price).toFixed(2) + '€';
+						get('cost-trip').textContent = (get('consumption').value * get('trip').value / 100 * price).toFixed(2) + '€';
 					}
 				}
 			}
