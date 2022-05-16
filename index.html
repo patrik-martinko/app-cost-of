@@ -261,6 +261,7 @@
 			localStorage.setItem('setup', true);
 			setVisibility('button-setup', false);
 			setVisibility('button-save', true);
+			update();
 		}
 		// get('country').prepend('<option>Detecting country</option>');
 		// if (!localStorage.getItem('country')) {
@@ -302,7 +303,11 @@
 		}
 		onAuthStateChanged(auth, (user) => {
 			const initSignIn = () => {
-				setVisibility('button-save', true);
+				if (localStorage.getItem('setup')) {
+					setVisibility('button-save', true);
+				} else {
+					setVisibility('button-setup', true);
+				}
 				get('button-save').onclick = () => {
 					get('modal-title').textContent = 'Enter your email address';
 					get('modal-submit').textContent = 'Send sign-in link';
