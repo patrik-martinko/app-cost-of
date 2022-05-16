@@ -21,9 +21,12 @@
 			</header>
 			<div id="alerts"></div>
 			<div class="p-5 mb-4 bg-light rounded-3">
-				<div class="container-fluid py-5">
-					<h2>Automatically show the cost of rides by your vehicle in the Google Maps' list of routes based on the current average fuel price.</h2>
-					<p class="col-md-8 fs-4">The extension automatically calculates and shows the approximate cost of a trip for electric or classic (combustion) vehicles based on the current average price of fuel or energy, the distance of the route, and the average consumption of your vehicle.</p>
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-8">
+							<h2 class="mb-5">Find out the current average fuel price in your country, calculate and automatically show the cost of rides by your vehicle directly in your map service.</h2>
+						</div>
+					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<form class="mb-3">
@@ -92,7 +95,7 @@
 							</form>
 							<div class="d-grid">
 								<button id="button-setup" class="btn btn-primary d-none" type="button">Set up your vehicle</button>
-								<button id="button-save" class="btn btn-primary d-none" type="button">Save settings online to your account</button>
+								<button id="button-save" class="btn btn-primary d-none" type="button">Backup settings to your account</button>
 							</div>
 							<p id="account" class="mt-2 text-center"></p>
 						</div>
@@ -145,13 +148,14 @@
 				<div class="col-md-6">
 					<div class="h-100 p-5 bg-light border rounded-3">
 						<h2>Feedback</h2>
-						<p>Do you have an idea? Do you want to add a new country, new useful feature...? Do not hesitate to contact me.</p>
+						<p>Do you have an idea? Do you want to add a new country, a new map service, a new useful feature...? Do not hesitate to contact me.</p>
 						<a href="https://github.com/patrik-martinko/app-cost-of/issues" class="btn btn-outline-secondary" type="button">Request a feature or report a bug</a>
 					</div>
 				</div>
 			</div>
 			<footer class="pt-3 mt-4 text-muted border-top">
-				<span class="" id="copyright"></span>
+				<span id="copyright"></span>
+				| Data source: <a href="https://energy.ec.europa.eu/data-and-analysis/weekly-oil-bulletin_en">ec.europa.eu</a>
 				<a href="https://patrikmartinko.com" class="float-end text-muted text-decoration-none">Patrik Martinko</a>
 			</footer>
 		</div>
