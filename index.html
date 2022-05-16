@@ -162,7 +162,7 @@
 		</div>
 	</main>
 	<div id="modal" class="modal fade" tabindex="-1">
-		<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 id="modal-title" class="modal-title"></h5>
@@ -170,8 +170,8 @@
 				</div>
 				<div class="modal-body">
 					<label for="email" class="form-label">Email address</label>
-					<input type="email" class="form-control" id="email" aria-describedby="email-help" placeholder="Email">
-					<div id="email-help" class="form-text">We'll never share your email with anyone else.</div>
+					<input type="email" class="form-control" id="email" aria-describedby="email-help" placeholder="name@domain.com">
+					<div id="email-help" class="form-text">Already saved settings will be loaded.</div>
 					<div id="modal-alerts"></div>
 				</div>
 				<div class="modal-footer">
@@ -309,7 +309,12 @@
 		const app = initializeApp(config);
 		const auth = getAuth(app);
 		const db = getFirestore(app);
-		const modal = new bootstrap.Modal(get('modal'));
+		const modal = new bootstrap.Modal(get('modal'), {
+			focus: false
+		});
+		get('modal').addEventListener('shown.bs.modal', event => {
+			get('email').focus();
+		});
 		const params = new URLSearchParams(document.location.search);
 		if (params.get('mode') && params.get('mode') === 'signIn' && localStorage.getItem('email')) {
 			signInWithEmailLink(auth, localStorage.getItem('email'), window.location.href).then(() => {
