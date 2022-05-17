@@ -2,10 +2,10 @@
     "manifest_version": 2,
     "name": "Cost of driving in Google Maps",
     "description": "Automatically show the cost of rides by your vehicle in the Google Maps' list of routes based on the current average fuel price.",
-    "version": "1.0.3",
+    "version": "2.0.0",
     "permissions": [
         "storage",
-        "https://data.statistics.sk/*"
+        "https://script.google.com/*"
     ],
     "background": {
         "scripts": [
@@ -15,7 +15,7 @@
     "content_scripts": [
         {
             "matches": [
-                "https://*.costof.app/*",
+                "https://costof.app/*",
                 "https://*.google.com/maps/*",
                 "https://*.google.ad/maps/*",
                 "https://*.google.ae/maps/*",
@@ -208,6 +208,7 @@
                 "https://*.google.cat/maps/*"
             ],
             "js": [
+                "options.js",
                 "script.js"
             ]
         }

@@ -1,25 +1,31 @@
 if (location.host === 'costof.app') {
-} else {
-    var options = {
-        type: 'electric',
-        priceElectric: 0.1,
-        consumptionElectric: 0.2,
-        consumption: 7
+    const set = control => {
+        let option = {};
+        option[control.getAttribute('id')] = control.value;
+        chrome.storage.sync.set(option);
     };
-    var get = function (options) {
-        var price;
-        var element = document.querySelector('#pane');
-        var render = function () {
-            document.querySelectorAll('div.ivN21e div').forEach(function (distanceElement) {
-                var distance = distanceElement.textContent;
+    const controls = document.getElementsByClassName('control');
+    for (let control of controls) {
+        set(control);
+        control.addEventListener('input', event => {
+            set(event.target);
+        });
+    }
+} else {
+    const get = options => {
+        let price;
+        const element = document.querySelector('#pane');
+        const render = function () {
+            document.querySelectorAll('div.ivN21e div').forEach(distanceElement => {
+                let distance = distanceElement.textContent;
                 if (distance.indexOf('(') === -1) {
-                    var dividing = distance.indexOf(' m') !== -1 ? 1000 : 1;
+                    const dividing = distance.indexOf(' m') !== -1 ? 1000 : 1;
                     distance = distance.replace(/[km\s]/g, '');
                     if ([distance.length - 2, distance.length - 3].includes(distance.indexOf(','))) {
                         distance = distance.replace(',', '.');
                     }
                     distance = distance.replace(',', '');
-                    if (options.type === 'electric') {
+                    if (options.type === 'electricity') {
                         distanceElement.textContent += ' (' + (distance / dividing * options.consumptionElectric * options.priceElectric).toFixed(2) + ' €)';
                         distanceElement.setAttribute('title', options.priceElectric + ' €/kWh');
                     } else {
@@ -29,29 +35,27 @@ if (location.host === 'costof.app') {
                 }
             });
         }
-        var handle = function () {
-            if (options.type !== 'electric' && price === undefined) {
-                var request = new XMLHttpRequest();
-                request.onreadystatechange = function () {
-                    if (request.readyState === XMLHttpRequest.DONE) {
-                        var values = JSON.parse(request.responseText)['value'].slice(3000);
-                        price = values[values.findIndex((element) => element === null) - {
-                            'gasoline-95': 5,
-                            'gasoline-98': 4,
-                            'lpg': 3,
-                            'diesel': 2,
-                            'cng': 1
-                        }[options.type]];
+        const handle = () => {
+            if (options.type !== 'electricity' && price === undefined) {
+                fetch('https://script.google.com/macros/s/AKfycby5CcRVznevNoWZeexy0m1DSeOX4Kg1FeMgxFdXlr4sySwgehnIr4T23Q5ooWDtR1iB/exec').then(response => {
+                    response.json().then(data => {
+                        for (let key in data) {
+                            if (data[key][0] == options.country) {
+                                price = data[key][{
+                                    'gasoline-95': 1,
+                                    'diesel': 2,
+                                    'lpg': 3
+                                }[options.type]];
+                            }
+                        }
                         render();
-                    }
-                }
-                request.open('GET', 'https://data.statistics.sk/api/v2/dataset/sp0207ts/all/all?lang=en&type=json');
-                request.send();
+                    });
+                });
             } else {
                 render();
             }
         };
-        var observer = new MutationObserver(handle);
+        const observer = new MutationObserver(handle);
         observer.observe(element, { childList: true, subtree: true });
         handle();
     };
