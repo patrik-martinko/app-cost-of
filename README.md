@@ -1,12 +1,10 @@
-# ![Icon](icon-32.png) Cost of driving in Google Maps
+# ![Icon](extension/icon-32.png) Cost of driving in Google Maps
 
 Automatically show the cost of rides by your vehicle in the Google Maps' list of routes based on the current average fuel price.
 
 Simplify your planning of trips with automatic calculation of the cost of rides by your vehicle directly in the Google Maps' list of routes.
 
 The extension automatically calculates and shows the approximate cost of a trip for electric or classic (combustion) vehicles based on the current average price of fuel or energy, the distance of the route, and the average consumption of your vehicle.
-
-\* Automatic detection of the average fuel price is currently available only in Slovakia.
 
 ## Browser extensions
 
