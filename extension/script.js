@@ -10,7 +10,7 @@ if (location.host === 'costof.app') {
         var price;
         var element = document.querySelector('#pane');
         var render = function () {
-            document.querySelectorAll('div.xB1mrd-T3iPGc-trip div, div.xB1mrd-T3iPGc-trip-tUvA6e div, div.xB1mrd-T3iPGc-iSfDt-tUvA6e div').forEach(function (distanceElement) {
+            document.querySelectorAll('div.ivN21e div').forEach(function (distanceElement) {
                 var distance = distanceElement.textContent;
                 if (distance.indexOf('(') === -1) {
                     var dividing = distance.indexOf(' m') !== -1 ? 1000 : 1;
