@@ -1,4 +1,6 @@
-# ![Icon](extension/icon-32.png) Cost of driving in Google Maps
+# ![Icon](extension/icon-32.png) [Cost of driving in Google Maps](https://costof.app)
+
+Website: [costof.app](https://costof.app)
 
 Automatically show the cost of rides by your vehicle in the Google Maps' list of routes based on the current average fuel price.
 
