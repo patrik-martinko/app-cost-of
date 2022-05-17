@@ -48,7 +48,7 @@ const update = () => {
 		get('latest-update').textContent = data[0][0];
 		for (let key in data) {
 			if (data[key][0] == options.country) {
-				const price = data[key][get('type').selectedIndex + 1];
+				const price = data[key][get('type').selectedIndex + 2];
 				get('price').textContent = price + '€/l';
 				get('cost-trip').textContent = (options.consumption * options.trip / 100 * price).toFixed(2) + '€';
 			}

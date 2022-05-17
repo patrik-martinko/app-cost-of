@@ -42,9 +42,9 @@ if (location.host === 'costof.app') {
                         for (let key in data) {
                             if (data[key][0] == options.country) {
                                 price = data[key][{
-                                    'gasoline-95': 1,
-                                    'diesel': 2,
-                                    'lpg': 3
+                                    'gasoline-95': 2,
+                                    'diesel': 3,
+                                    'lpg': 4
                                 }[options.type]];
                             }
                         }
