@@ -160,6 +160,7 @@ onAuthStateChanged(auth, (user) => {
 		get('button-signout').onclick = () => {
 			signOut(auth).then(() => {
 				initSignIn();
+				get('alerts').innerHTML = '<div class="alert alert-success alert-dismissible mb-7" role="alert">You have been signed out.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
 			});
 			return false;
 		}
