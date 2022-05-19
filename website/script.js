@@ -118,7 +118,7 @@ const db = getFirestore(app);
 const modal = new bootstrap.Modal(get('modal'), {
 	focus: false
 });
-get('modal').addEventListener('shown.bs.modal', event => {
+get('modal').addEventListener('shown.bs.modal', () => {
 	get('email').focus();
 });
 const params = new URLSearchParams(document.location.search);
@@ -130,6 +130,7 @@ if (params.get('mode') && params.get('mode') === 'signIn' && localStorage.getIte
 }
 onAuthStateChanged(auth, (user) => {
 	const initSignIn = () => {
+		get('account').innerHTML = '';
 		if (localStorage.getItem('setup')) {
 			setVisibility('button-save', true);
 		} else {
