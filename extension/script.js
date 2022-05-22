@@ -14,7 +14,7 @@ if (location.host === 'costof.app') {
 } else {
     const get = options => {
         let price;
-        const element = document.querySelector('#pane');
+        const element = document.querySelector('#QA0Szd');
         const render = function () {
             document.querySelectorAll('div.ivN21e div').forEach(distanceElement => {
                 let distance = distanceElement.textContent;
