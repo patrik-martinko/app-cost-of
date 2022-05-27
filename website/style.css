@@ -15,8 +15,7 @@
 }
 
 #container-chart-countries {
-	width: 80vw;
-	height: 40vh;
+	height: 60vh;
 }
 
 @media (max-width: 767.98px) {
