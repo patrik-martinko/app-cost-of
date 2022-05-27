@@ -89,7 +89,7 @@ const update = () => {
 			data: {
 				labels: chartOptions['labels'],
 				datasets: [{
-					label: 'Current average fuel price / ' + indexName + '/ €/l',
+					label: 'Current average fuel price / ' + indexName + ' / €/l',
 					data: chartOptions['data'],
 					backgroundColor: chartOptions['colors']
 				}]
@@ -97,7 +97,7 @@ const update = () => {
 		});
 	} else {
 		charts.countries.data.labels = chartOptions['labels'];
-		charts.countries.data.datasets[0].label = 'Current average fuel price / ' + indexName + '/ €/l';
+		charts.countries.data.datasets[0].label = 'Current average fuel price / ' + indexName + ' / €/l';
 		charts.countries.data.datasets[0].data = chartOptions['data'];
 		charts.countries.data.datasets[0].backgroundColor = chartOptions['colors'];
 		charts.countries.update();
