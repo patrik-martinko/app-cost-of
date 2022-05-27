@@ -93,6 +93,9 @@ const update = () => {
 					data: chartOptions['data'],
 					backgroundColor: chartOptions['colors']
 				}]
+			},
+			options: {
+				maintainAspectRatio: false
 			}
 		});
 	} else {
