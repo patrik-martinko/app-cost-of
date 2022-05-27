@@ -89,7 +89,7 @@ const update = () => {
 			data: {
 				labels: chartOptions['labels'],
 				datasets: [{
-					label: 'Current average fuel price / ' + indexName + '€/l',
+					label: 'Current average fuel price / ' + indexName + '/ €/l',
 					data: chartOptions['data'],
 					backgroundColor: chartOptions['colors']
 				}]
