@@ -35,6 +35,7 @@ const update = () => {
 		'diesel': 3,
 		'lpg': 4
 	}[options.type];
+	const indexName = get('type').options[get('type').selectedIndex].textContent;
 	if (options.type == 'electricity') {
 		setVisibility('data-current', false);
 		if (localStorage.getItem('setup')) {
@@ -52,7 +53,7 @@ const update = () => {
 			setVisibility('control-priceElectricity', false);
 			setVisibility('data-trip', true);
 		}
-		get('selected-type').textContent = '(' + get('type').options[get('type').selectedIndex].textContent + ')';
+		get('selected-type').textContent = '(' + indexName + ')';
 		get('latest-update').textContent = data[0][0];
 		for (let key in data) {
 			if (data[key][0] == options.country) {
@@ -88,7 +89,7 @@ const update = () => {
 			data: {
 				labels: chartOptions['labels'],
 				datasets: [{
-					label: 'Price',
+					label: 'Current average fuel price / ' + indexName + '€/l',
 					data: chartOptions['data'],
 					backgroundColor: chartOptions['colors']
 				}]
@@ -96,6 +97,7 @@ const update = () => {
 		});
 	} else {
 		charts.countries.data.labels = chartOptions['labels'];
+		charts.countries.data.datasets[0].label = 'Current average fuel price / ' + indexName + '/ €/l';
 		charts.countries.data.datasets[0].data = chartOptions['data'];
 		charts.countries.data.datasets[0].backgroundColor = chartOptions['colors'];
 		charts.countries.update();
