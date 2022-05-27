@@ -2,6 +2,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebas
 import { getAuth, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailLink, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js';
 let data = null;
+let charts = {
+	countries: null
+};
 const get = (id) => {
 	return document.getElementById(id);
 }
@@ -27,14 +30,19 @@ const input = (control, load) => {
 	}
 };
 const update = () => {
-	if (get('type').value == 'electricity') {
+	const index = {
+		'gasoline-95': 2,
+		'diesel': 3,
+		'lpg': 4
+	}[options.type];
+	if (options.type == 'electricity') {
 		setVisibility('data-current', false);
 		if (localStorage.getItem('setup')) {
 			setVisibility('control-consumption', false);
 			setVisibility('control-consumptionElectricity', true);
 			setVisibility('control-priceElectricity', true);
 			setVisibility('data-trip', true);
-			get('cost-trip').textContent = (get('consumptionElectricity').value * get('priceElectricity').value * 100).toFixed(2) + '€';
+			get('cost-trip').textContent = (options.consumptionElectricity * options.priceElectricity * 100).toFixed(2) + '€';
 		}
 	} else {
 		setVisibility('data-current', true);
@@ -48,11 +56,49 @@ const update = () => {
 		get('latest-update').textContent = data[0][0];
 		for (let key in data) {
 			if (data[key][0] == options.country) {
-				const price = data[key][get('type').selectedIndex + 2];
+				const price = data[key][index];
 				get('price').textContent = price + '€/l';
 				get('cost-trip').textContent = (options.consumption * options.trip / 100 * price).toFixed(2) + '€';
 			}
 		}
+	}
+	let chartOptions = {
+		labels: [],
+		data: [],
+		colors: []
+	};
+	const chartData = structuredClone(data);
+	chartData.splice(0, 1);
+	for (let i = 0; i < chartData.length; i++) {
+		if (!chartData[i][index]) {
+			chartData.splice(i, 1);
+		}
+	}
+	chartData.sort((a, b) => {
+		return b[index] - a[index];
+	});
+	for (let i = 0; i < chartData.length; i++) {
+		chartOptions['labels'][i] = chartData[i][1];
+		chartOptions['data'][i] = chartData[i][index];
+		chartOptions['colors'][i] = chartData[i][0] == options.country ? '#0d6efd' : '#212529';
+	}
+	if (charts.countries === null) {
+		charts.countries = new Chart('chart-countries', {
+			type: 'bar',
+			data: {
+				labels: chartOptions['labels'],
+				datasets: [{
+					label: 'Price',
+					data: chartOptions['data'],
+					backgroundColor: chartOptions['colors']
+				}]
+			}
+		});
+	} else {
+		charts.countries.data.labels = chartOptions['labels'];
+		charts.countries.data.datasets[0].data = chartOptions['data'];
+		charts.countries.data.datasets[0].backgroundColor = chartOptions['colors'];
+		charts.countries.update();
 	}
 };
 const controls = document.getElementsByClassName('control');
@@ -69,7 +115,7 @@ get('button-setup').onclick = () => {
 	setVisibility('button-save', true);
 	input(get('country'), true);
 }
-var countryInit = false;
+let countryInit = false;
 get('country').onclick = () => {
 	countryInit = true;
 	get('country').firstChild.remove();
