@@ -126,7 +126,7 @@ const update = () => {
 							data: chartOptions['data'],
 							borderColor: '#0d6efd',
 							backgroundColor: '#0d6efd',
-							tension: 0.2
+							tension: 0.5
 						}]
 					},
 					options: {
