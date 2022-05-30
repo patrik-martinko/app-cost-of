@@ -3,7 +3,8 @@ import { getAuth, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailLink
 import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js';
 let data = null;
 let charts = {
-	countries: null
+	countries: null,
+	history: null
 };
 const get = (id) => {
 	return document.getElementById(id);
@@ -30,12 +31,12 @@ const input = (control, load) => {
 	}
 };
 const update = () => {
-	const index = {
+	const type = {
 		'gasoline-95': 2,
 		'diesel': 3,
 		'lpg': 4
 	}[options.type];
-	const indexName = get('type').options[get('type').selectedIndex].textContent;
+	const typeName = get('type').options[get('type').selectedIndex].textContent;
 	if (options.type == 'electricity') {
 		setVisibility('data-current', false);
 		if (localStorage.getItem('setup')) {
@@ -53,11 +54,11 @@ const update = () => {
 			setVisibility('control-priceElectricity', false);
 			setVisibility('data-trip', true);
 		}
-		get('selected-type').textContent = '(' + indexName + ')';
+		get('selected-type').textContent = '(' + typeName + ')';
 		get('latest-update').textContent = data[0][0];
 		for (let key in data) {
 			if (data[key][0] == options.country) {
-				const price = data[key][index];
+				const price = data[key][type];
 				get('price').textContent = price + '€/l';
 				get('cost-trip').textContent = (options.consumption * options.trip / 100 * price).toFixed(2) + '€';
 			}
@@ -71,16 +72,16 @@ const update = () => {
 	const chartData = structuredClone(data);
 	chartData.splice(0, 1);
 	for (let i = 0; i < chartData.length; i++) {
-		if (!chartData[i][index]) {
+		if (!chartData[i][type]) {
 			chartData.splice(i, 1);
 		}
 	}
 	chartData.sort((a, b) => {
-		return b[index] - a[index];
+		return b[type] - a[type];
 	});
 	for (let i = 0; i < chartData.length; i++) {
 		chartOptions['labels'][i] = chartData[i][1];
-		chartOptions['data'][i] = chartData[i][index];
+		chartOptions['data'][i] = chartData[i][type];
 		chartOptions['colors'][i] = chartData[i][0] == options.country ? '#0d6efd' : '#212529';
 	}
 	if (charts.countries === null) {
@@ -89,7 +90,7 @@ const update = () => {
 			data: {
 				labels: chartOptions['labels'],
 				datasets: [{
-					label: indexName + ' (€/l)',
+					label: typeName + ' (€/l)',
 					data: chartOptions['data'],
 					backgroundColor: chartOptions['colors']
 				}]
@@ -100,11 +101,44 @@ const update = () => {
 		});
 	} else {
 		charts.countries.data.labels = chartOptions['labels'];
-		charts.countries.data.datasets[0].label = indexName + ' (€/l)';
+		charts.countries.data.datasets[0].label = typeName + ' (€/l)';
 		charts.countries.data.datasets[0].data = chartOptions['data'];
 		charts.countries.data.datasets[0].backgroundColor = chartOptions['colors'];
 		charts.countries.update();
 	}
+	fetch('https://script.google.com/macros/s/AKfycbw0QjqoHNuxd4T90rrcLObtGmLBh6UJqjlWB4SFAavfhxHISPiBARMJGm7KNaMkeg_U/exec?country=' + options.country).then(response => {
+		response.json().then(response => {
+			let chartOptions = {
+				labels: [],
+				data: []
+			};
+			for (let i = 0; i < response.length; i++) {
+				chartOptions['labels'][i] = response[i][0];
+				chartOptions['data'][i] = response[i][type - 1];
+			}
+			if (charts.history === null) {
+				charts.history = new Chart('chart-history', {
+					type: 'line',
+					data: {
+						labels: chartOptions['labels'],
+						datasets: [{
+							label: typeName + ' (€/l)',
+							data: chartOptions['data'],
+							borderColor: '#0d6efd'
+						}]
+					},
+					options: {
+						maintainAspectRatio: false
+					}
+				});
+			} else {
+				charts.history.data.labels = chartOptions['labels'];
+				charts.history.data.datasets[0].label = typeName + ' (€/l)';
+				charts.history.data.datasets[0].data = chartOptions['data'];
+				charts.history.update();
+			}
+		});
+	});
 };
 const controls = document.getElementsByClassName('control');
 for (let control of controls) {
@@ -147,7 +181,7 @@ if (!localStorage.getItem('country')) {
 	get('country').value = localStorage.getItem('country');
 	input(get('country'), false);
 }
-fetch('https://script.google.com/macros/s/AKfycby5CcRVznevNoWZeexy0m1DSeOX4Kg1FeMgxFdXlr4sySwgehnIr4T23Q5ooWDtR1iB/exec').then(response => {
+fetch('https://script.google.com/macros/s/AKfycbw0QjqoHNuxd4T90rrcLObtGmLBh6UJqjlWB4SFAavfhxHISPiBARMJGm7KNaMkeg_U/exec').then(response => {
 	response.json().then(response => {
 		data = response;
 		update();

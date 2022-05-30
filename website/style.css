@@ -6,16 +6,16 @@
 	user-select: none;
 }
 
+.chart {
+	height: 60vh;
+}
+
 #main {
 	background: top right/120% no-repeat url('background.png');
 }
 
 #trip {
 	width: 4rem;
-}
-
-#container-chart-countries {
-	height: 60vh;
 }
 
 @media (max-width: 767.98px) {
