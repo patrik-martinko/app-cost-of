@@ -106,7 +106,7 @@ const update = () => {
 		charts.countries.data.datasets[0].backgroundColor = chartOptions['colors'];
 		charts.countries.update();
 	}
-	fetch('https://script.google.com/macros/s/AKfycbw0QjqoHNuxd4T90rrcLObtGmLBh6UJqjlWB4SFAavfhxHISPiBARMJGm7KNaMkeg_U/exec?country=' + options.country).then(response => {
+	fetch('https://script.google.com/macros/s/AKfycbzH7fbl3blC3d1Joh4uLtTY_FyES_N-XplKtMyTifs6MH5jdHQONpzBpa8NIRrGmAEm/exec?country=' + options.country).then(response => {
 		response.json().then(response => {
 			let chartOptions = {
 				labels: [],
@@ -124,7 +124,8 @@ const update = () => {
 						datasets: [{
 							label: typeName + ' (€/l)',
 							data: chartOptions['data'],
-							borderColor: '#0d6efd'
+							borderColor: '#0d6efd',
+							backgroundColor: '#0d6efd'
 						}]
 					},
 					options: {
@@ -181,7 +182,7 @@ if (!localStorage.getItem('country')) {
 	get('country').value = localStorage.getItem('country');
 	input(get('country'), false);
 }
-fetch('https://script.google.com/macros/s/AKfycbw0QjqoHNuxd4T90rrcLObtGmLBh6UJqjlWB4SFAavfhxHISPiBARMJGm7KNaMkeg_U/exec').then(response => {
+fetch('https://script.google.com/macros/s/AKfycbzH7fbl3blC3d1Joh4uLtTY_FyES_N-XplKtMyTifs6MH5jdHQONpzBpa8NIRrGmAEm/exec').then(response => {
 	response.json().then(response => {
 		data = response;
 		update();
