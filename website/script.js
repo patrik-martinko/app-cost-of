@@ -252,12 +252,13 @@ onAuthStateChanged(auth, (user) => {
 			return false;
 		}
 		getDoc(doc(db, 'options', user.email)).then((remote) => {
-			if (!remote) {
+			if (remote.data()) {
+				for (let control of controls) {
+					control.value = remote.data()[control.getAttribute('id')];
+					input(control, true);
+				}
+			} else {
 				setDoc(doc(db, 'options', user.email), options);
-			}
-			for (let control of controls) {
-				control.value = remote.data()[control.getAttribute('id')];
-				input(control, true);
 			}
 		});
 	} else {
