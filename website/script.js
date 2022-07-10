@@ -245,6 +245,7 @@ onAuthStateChanged(auth, (user) => {
 	};
 	if (user) {
 		get('account').innerHTML = user.email + ' <a href="" id="button-signout" class="text-muted">(sign out)</a>';
+		setVisibility('button-get', true);
 		setVisibility('button-setup', false);
 		localStorage.setItem('setup', true);
 		get('button-signout').onclick = () => {
