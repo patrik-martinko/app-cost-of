@@ -27,7 +27,7 @@
 				<div class="container-fluid">
 					<div class="row mb-5">
 						<div class="col-md-6">
-							<h2 id="description">Find out the current average fuel price in your country, calculate and automatically show the costs of rides by your vehicle directly in your map service.</h2>
+							<h2 id="description">Find out the current average retail price of gasoline, diesel or lpg in your country, calculate and automatically show the fuel costs of rides by your vehicle directly in your map service.</h2>
 						</div>
 					</div>
 					<div class="row">
@@ -98,7 +98,7 @@
 							</form>
 							<div class="d-grid">
 								<button id="button-setup" class="btn btn-primary d-none" type="button">Set up your vehicle</button>
-								<button id="button-save" class="btn btn-primary d-none" type="button">Sync settings across your devices</button>
+								<button id="button-get" class="btn btn-primary d-none" type="button">Get the application</button>
 							</div>
 							<p id="account" class="mt-2 text-center"></p>
 						</div>
@@ -118,15 +118,15 @@
 				</div>
 			</div>
 			<div class="chart p-5 mb-4 bg-light border rounded-3">
-				<canvas id="chart-countries"></canvas>
-			</div>
-			<div class="chart p-5 mb-4 bg-light border rounded-3">
 				<canvas id="chart-history"></canvas>
 			</div>
-			<div class="row align-items-md-stretch">
+			<div class="chart p-5 mb-4 bg-light border rounded-3">
+				<canvas id="chart-countries"></canvas>
+			</div>
+			<div id="links" class="row align-items-md-stretch">
 				<div class="col-md-6 mb-4">
-					<div class="h-100 p-5 text-white bg-dark rounded-3">
-						<h2>Install browser extensions</h2>
+					<div class="h-100 p-5 text-white bg-dark rounded-3 text-center">
+						<h2>Browser extensions</h2>
 						<div class="row">
 							<div class="col">
 								<a class="text-center text-light text-decoration-none" href="https://chrome.google.com/webstore/detail/cost-of-driving-in-google/glajpeclpoeodmfofkelgedjphkdgmie">
@@ -153,13 +153,14 @@
 								</a>
 							</div>
 						</div>
+						<p class="text-muted mt-4">*Phone applications will be available soon</p>
 					</div>
 				</div>
 				<div class="col-md-6 mb-4">
-					<div class="h-100 p-5 bg-light border rounded-3">
+					<div class="h-100 p-5 bg-light border rounded-3 text-center">
 						<h2>Feedback</h2>
-						<p>Do you have an idea? Do you want to add a new country, a new map service, a new useful feature...? Do not hesitate to contact me.</p>
-						<a href="https://github.com/patrik-martinko/app-cost-of/issues" class="btn btn-outline-secondary" type="button">Request a feature or report a bug</a>
+						<p class="my-5">Do you have an idea? Do you want to add a new country, a new map service, a new useful feature...? Do not hesitate to contact me.</p>
+						<a href="https://github.com/patrik-martinko/app-cost-of/issues" class="btn btn-lg btn-outline-secondary" type="button">Request a feature or report a bug</a>
 					</div>
 				</div>
 			</div>
@@ -193,7 +194,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js" integrity="sha256-cHVO4dqZfamRhWD7s4iXyaXWVK10odD+qp4xidFzqTI=" crossorigin="anonymous"></script>
 	<script src="extension/options.js"></script>
-	<script type="module" src="website/script.js?v=15"></script>
+	<script type="module" src="website/script.js?v=16"></script>
 </body>
 
 </html>

@@ -92,7 +92,8 @@ const update = () => {
 				datasets: [{
 					label: typeName + ' (€/l)',
 					data: chartOptions['data'],
-					backgroundColor: chartOptions['colors']
+					backgroundColor: chartOptions['colors'],
+					borderRadius: 3
 				}]
 			},
 			options: {
@@ -153,8 +154,11 @@ for (let control of controls) {
 get('button-setup').onclick = () => {
 	localStorage.setItem('setup', true);
 	setVisibility('button-setup', false);
-	setVisibility('button-save', true);
+	setVisibility('button-get', true);
 	input(get('country'), true);
+}
+get('button-get').onclick = () => {
+	get('links').scrollIntoView();
 }
 let countryInit = false;
 get('country').onclick = () => {
@@ -217,13 +221,13 @@ if (params.get('mode') && params.get('mode') === 'signIn' && localStorage.getIte
 }
 onAuthStateChanged(auth, (user) => {
 	const initSignIn = () => {
-		get('account').innerHTML = '';
+		get('account').innerHTML = '<a href="" id="button-signin" class="text-muted">Sync settings across your devices</a>';
 		if (localStorage.getItem('setup')) {
-			setVisibility('button-save', true);
+			setVisibility('button-get', true);
 		} else {
 			setVisibility('button-setup', true);
 		}
-		get('button-save').onclick = () => {
+		get('button-signin').onclick = () => {
 			get('modal-title').textContent = 'Enter your email address';
 			get('modal-submit').textContent = 'Send sign-in link';
 			get('modal-submit').onclick = () => {
@@ -242,7 +246,6 @@ onAuthStateChanged(auth, (user) => {
 	if (user) {
 		get('account').innerHTML = user.email + ' <a href="" id="button-signout" class="text-muted">(sign out)</a>';
 		setVisibility('button-setup', false);
-		setVisibility('button-save', false);
 		localStorage.setItem('setup', true);
 		get('button-signout').onclick = () => {
 			signOut(auth).then(() => {
