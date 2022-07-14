@@ -21,6 +21,9 @@ if (location.host === 'costof.app') {
                 if (distance.indexOf('(') === -1) {
                     const dividing = distance.indexOf(' m') !== -1 ? 1000 : 1;
                     distance = distance.replace(/[km\s]/g, '');
+                    if (![distance.length - 2, distance.length - 3].includes(distance.indexOf('.'))) {
+                        distance = distance.replace('.', '');
+                    }
                     if ([distance.length - 2, distance.length - 3].includes(distance.indexOf(','))) {
                         distance = distance.replace(',', '.');
                     }
