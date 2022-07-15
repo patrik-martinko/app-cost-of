@@ -12,6 +12,7 @@ if (location.host === 'costof.app') {
         });
     }
 } else {
+    const formatCurrency = new Intl.NumberFormat(document.getElementsByTagName('html')[0].getAttribute('lang'), { style: 'currency', currency: 'EUR' });
     const get = options => {
         let price;
         const element = document.querySelector('#QA0Szd');
@@ -29,11 +30,11 @@ if (location.host === 'costof.app') {
                     }
                     distance = distance.replace(',', '');
                     if (options.type === 'electricity') {
-                        distanceElement.textContent += ' (' + (distance / dividing * options.consumptionElectric * options.priceElectric).toFixed(2) + ' €)';
-                        distanceElement.setAttribute('title', options.priceElectric + ' €/kWh');
+                        distanceElement.textContent += ' (' + formatCurrency.format((distance / dividing * options.consumptionElectric * options.priceElectric).toFixed(2)) + ')';
+                        distanceElement.setAttribute('title', formatCurrency.format(options.priceElectric) + '/kWh');
                     } else {
-                        distanceElement.textContent += ' (' + (distance / dividing / 100 * options.consumption * price).toFixed(2) + ' €)';
-                        distanceElement.setAttribute('title', price + ' €/' + (options.type === 'cng' ? 'kg' : 'l'));
+                        distanceElement.textContent += ' (' + formatCurrency.format((distance / dividing / 100 * options.consumption * price).toFixed(2)) + ')';
+                        distanceElement.setAttribute('title', formatCurrency.format(price) + '/' + (options.type === 'cng' ? 'kg' : 'l'));
                     }
                 }
             });
