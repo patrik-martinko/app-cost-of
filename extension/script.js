@@ -63,9 +63,5 @@ if (location.host === 'costof.app') {
         observer.observe(element, { childList: true, subtree: true });
         handle();
     };
-    if (typeof browser !== 'undefined') {
-        browser.storage.local.get(options, get);
-    } else {
-        chrome.storage.sync.get(options, get);
-    }
+    chrome.storage.sync.get(options, get);
 }
