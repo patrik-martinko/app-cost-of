@@ -60,7 +60,7 @@ const update = () => {
 			if (data[key][0] == options.country) {
 				const price = data[key][type];
 				get('price').textContent = price + '€/l';
-				get('cost-trip').textContent = (options.consumption * options.trip / 100 * price).toFixed(2) + '€';
+				get('cost-trip').value = (options.consumption * options.trip / 100 * price).toFixed(2);
 			}
 		}
 	}
