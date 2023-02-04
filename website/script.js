@@ -6,14 +6,16 @@ let charts = {
 	countries: null,
 	history: null
 };
-const get = (id) => {
+const get = id => {
 	return document.getElementById(id);
-}
-const setVisibility = (id, visibility) => {
+};
+const show = id => {
 	const element = document.getElementById(id);
-	if (visibility) {
-		element.setAttribute('class', element.getAttribute('class').replace('d-none', ''));
-	} else if (element.getAttribute('class').indexOf('d-none') === -1) {
+	element.setAttribute('class', element.getAttribute('class').replace('d-none', ''));
+};
+const hide = id => {
+	const element = document.getElementById(id);
+	if (element.getAttribute('class').indexOf('d-none') === -1) {
 		element.setAttribute('class', element.getAttribute('class') + ' d-none');
 	}
 };
@@ -38,21 +40,21 @@ const update = () => {
 	}[options.type];
 	const typeName = get('type').options[get('type').selectedIndex].textContent;
 	if (options.type == 'electricity') {
-		setVisibility('data-current', false);
+		hide('data-current');
 		if (localStorage.getItem('setup')) {
-			setVisibility('control-consumption', false);
-			setVisibility('control-consumptionElectricity', true);
-			setVisibility('control-priceElectricity', true);
-			setVisibility('data-trip', true);
+			hide('control-consumption');
+			show('control-consumptionElectricity');
+			show('control-priceElectricity');
+			show('data-trip');
 			get('cost-trip').textContent = (options.consumptionElectricity * options.priceElectricity * 100).toFixed(2) + '€';
 		}
 	} else {
-		setVisibility('data-current', true);
+		show('data-current');
 		if (localStorage.getItem('setup')) {
-			setVisibility('control-consumption', true);
-			setVisibility('control-consumptionElectricity', false);
-			setVisibility('control-priceElectricity', false);
-			setVisibility('data-trip', true);
+			show('control-consumption');
+			hide('control-consumptionElectricity');
+			hide('control-priceElectricity');
+			show('data-trip');
 		}
 		get('selected-type').textContent = '(' + typeName + ')';
 		get('latest-update').textContent = data[0][0];
@@ -153,13 +155,13 @@ for (let control of controls) {
 }
 get('button-setup').onclick = () => {
 	localStorage.setItem('setup', true);
-	setVisibility('button-setup', false);
-	setVisibility('button-get', true);
+	hide('button-setup');
+	show('button-get');
 	input(get('country'), true);
-}
+};
 get('button-get').onclick = () => {
 	get('links').scrollIntoView();
-}
+};
 let countryInit = false;
 get('country').onclick = () => {
 	countryInit = true;
@@ -223,9 +225,9 @@ onAuthStateChanged(auth, (user) => {
 	const initSignIn = () => {
 		get('account').innerHTML = '<a href="" id="button-signin" class="text-muted">Sync settings across your devices</a>';
 		if (localStorage.getItem('setup')) {
-			setVisibility('button-get', true);
+			show('button-get');
 		} else {
-			setVisibility('button-setup', true);
+			show('button-setup');
 		}
 		get('button-signin').onclick = () => {
 			get('modal-title').textContent = 'Enter your email address';
@@ -245,8 +247,8 @@ onAuthStateChanged(auth, (user) => {
 	};
 	if (user) {
 		get('account').innerHTML = user.email + ' <a href="" id="button-signout" class="text-muted">(sign out)</a>';
-		setVisibility('button-get', true);
-		setVisibility('button-setup', false);
+		show('button-get');
+		hide('button-setup');
 		localStorage.setItem('setup', true);
 		get('button-signout').onclick = () => {
 			signOut(auth).then(() => {
