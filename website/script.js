@@ -66,11 +66,6 @@ const update = () => {
 			}
 		}
 	}
-	let chartOptions = {
-		labels: [],
-		data: [],
-		colors: []
-	};
 	const chartData = structuredClone(data);
 	chartData.splice(0, 1);
 	for (let i = 0; i < chartData.length; i++) {
@@ -81,20 +76,17 @@ const update = () => {
 	chartData.sort((a, b) => {
 		return b[type] - a[type];
 	});
-	for (let i = 0; i < chartData.length; i++) {
-		chartOptions['labels'][i] = chartData[i][1];
-		chartOptions['data'][i] = chartData[i][type];
-		chartOptions['colors'][i] = chartData[i][0] == options.country ? '#0d6efd' : '#212529';
-	}
+	const labels = chartData.map(record => record[1]);
+	const colors = chartData.map(record => record[0] === options.country ? '#0d6efd' : '#212529');
 	if (charts.countries === null) {
 		charts.countries = new Chart('chart-countries', {
 			type: 'bar',
 			data: {
-				labels: chartOptions['labels'],
+				labels: labels,
 				datasets: [{
 					label: typeName + ' (€/l)',
-					data: chartOptions['data'],
-					backgroundColor: chartOptions['colors'],
+					data: chartData.map(record => record[type]),
+					backgroundColor: colors,
 					borderRadius: 3
 				}]
 			},
@@ -103,46 +95,49 @@ const update = () => {
 			}
 		});
 	} else {
-		charts.countries.data.labels = chartOptions['labels'];
+		charts.countries.data.labels = labels;
 		charts.countries.data.datasets[0].label = typeName + ' (€/l)';
-		charts.countries.data.datasets[0].data = chartOptions['data'];
-		charts.countries.data.datasets[0].backgroundColor = chartOptions['colors'];
+		charts.countries.data.datasets[0].data = chartData.map(record => record[type]);
+		charts.countries.data.datasets[0].backgroundColor = colors;
 		charts.countries.update();
 	}
-	fetch('https://script.google.com/macros/s/AKfycbzH7fbl3blC3d1Joh4uLtTY_FyES_N-XplKtMyTifs6MH5jdHQONpzBpa8NIRrGmAEm/exec?country=' + options.country).then(response => {
-		response.json().then(response => {
-			let chartOptions = {
-				labels: [],
-				data: []
-			};
-			for (let i = 0; i < response.length; i++) {
-				chartOptions['labels'][i] = response[i][0];
-				chartOptions['data'][i] = response[i][type - 1];
-			}
-			if (charts.history === null) {
-				charts.history = new Chart('chart-history', {
-					type: 'line',
-					data: {
-						labels: chartOptions['labels'],
-						datasets: [{
-							label: typeName + ' (€/l)',
-							data: chartOptions['data'],
-							borderColor: '#0d6efd',
-							backgroundColor: '#0d6efd',
-							tension: 0.5
-						}]
-					},
-					options: {
-						maintainAspectRatio: false
+	fetch('https://script.google.com/macros/s/AKfycbzNGzvH8k5Uzk7NiT8wBSiauUZjMciW2SsYa2ocJGabUC1UqOTC6GA7K9Fjz1r7qnUC/exec?country=' + options.country).then(response => response.json()).then(response => {
+		const columns = response[0].length === 4 ? [0, 1, 2] : [0, 1];
+		const labels = response.map(record => record[0]);
+		const colors = {
+			primary: '#0d6efd',
+			border: ['#909090', '#505050'],
+			background: ['#909090', '#505050']
+		}
+		const data = {
+			labels: labels,
+			datasets: columns.map(index => {
+				return {
+					label: get('type').options[index].textContent + ' (€/l)',
+					data: response.map(record => record[index + 1]),
+					borderColor: index + 2 === type ? colors.primary : colors.border.pop(),
+					backgroundColor: index + 2 === type ? colors.primary : colors.background.pop(),
+					tension: 0.5
+				};
+			})
+		};
+		if (charts.history === null) {
+			charts.history = new Chart('chart-history', {
+				type: 'line',
+				data: data,
+				options: {
+					maintainAspectRatio: false,
+					elements: {
+						point: {
+							radius: 1
+						}
 					}
-				});
-			} else {
-				charts.history.data.labels = chartOptions['labels'];
-				charts.history.data.datasets[0].label = typeName + ' (€/l)';
-				charts.history.data.datasets[0].data = chartOptions['data'];
-				charts.history.update();
-			}
-		});
+				}
+			});
+		} else {
+			charts.history.data = data;
+			charts.history.update();
+		}
 	});
 };
 const controls = document.getElementsByClassName('control');
@@ -162,38 +157,38 @@ get('button-setup').onclick = () => {
 get('button-get').onclick = () => {
 	get('links').scrollIntoView();
 };
-let countryInit = false;
+let countryDetecting = false;
 get('country').onclick = () => {
-	countryInit = true;
-	get('country').firstChild.remove();
+	if (countryDetecting) {
+		countryDetecting = false;
+		get('country').firstChild.remove();
+	}
 };
 if (!localStorage.getItem('country')) {
+	countryDetecting = true;
 	const option = document.createElement('option');
 	option.textContent = 'Detecting country...';
 	get('country').prepend(option);
-	fetch('https://api.ipregistry.co/?key=kpebi6wx7c0b7v6w').then(response => {
-		response.json().then(response => {
-			if (!countryInit) {
-				const control = get('country');
-				control.value = response.location.country.code;
-				control.firstChild.remove();
-				input(control, false);
-			}
-		});
+	fetch('https://api.ipregistry.co/?key=kpebi6wx7c0b7v6w').then(response => response.json()).then(response => {
+		if (countryDetecting) {
+			const control = get('country');
+			control.value = response.location.country.code;
+			control.firstChild.remove();
+			input(control, false);
+		}
 	}).catch(reason => {
-		countryInit = true;
-		get('country').firstChild.remove();
-		input(get('country'), false);
+		if (countryDetecting) {
+			countryDetecting = false;
+			get('country').firstChild.remove();
+		}
 	});
 } else {
 	get('country').value = localStorage.getItem('country');
 	input(get('country'), false);
 }
-fetch('https://script.google.com/macros/s/AKfycbzH7fbl3blC3d1Joh4uLtTY_FyES_N-XplKtMyTifs6MH5jdHQONpzBpa8NIRrGmAEm/exec').then(response => {
-	response.json().then(response => {
-		data = response;
-		update();
-	});
+fetch('https://script.google.com/macros/s/AKfycbzNGzvH8k5Uzk7NiT8wBSiauUZjMciW2SsYa2ocJGabUC1UqOTC6GA7K9Fjz1r7qnUC/exec').then(response => response.json()).then(response => {
+	data = response;
+	update();
 });
 get('copyright').innerHTML = '&copy; ' + (new Date()).getFullYear();
 const config = {
