@@ -268,5 +268,5 @@ onAuthStateChanged(auth, (user) => {
 });
 const url = new URL(location);
 if (url.searchParams.get('share')) {
-	alert(url.searchParams.get('share'));
+	alert(url.searchParams.get('share') + ' ' + url.searchParams.get('link'));
 }
