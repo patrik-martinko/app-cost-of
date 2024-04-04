@@ -62,7 +62,8 @@
 	}
 }
 
-@media (display-mode: standalone) {
+@media (display-mode: standalone),
+print {
 
 	#main {
 		background: none;
