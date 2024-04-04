@@ -62,3 +62,13 @@
 		margin-right: 0 !important;
 	}
 }
+
+@media (display-mode: standalone) {
+	#main {
+		background: none;
+	}
+
+	#introduction {
+		display: none;
+	}
+}
