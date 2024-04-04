@@ -65,7 +65,10 @@
 
 @media (display-mode: standalone) {
 
-	#main,
+	#main {
+		background: none;
+	}
+
 	#introduction,
 	#button-get,
 	#links {
