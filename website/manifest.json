@@ -1,7 +1,7 @@
 {
 	"name": "Cost of transport",
 	"start_url": "https://costof.app",
-	"display": "fullscreen",
+	"display": "standalone",
 	"icons": [
 		{
 			"src": "../extension/icon-16.png",
