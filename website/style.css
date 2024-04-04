@@ -64,11 +64,11 @@
 }
 
 @media (display-mode: standalone) {
-	#main {
-		background: none;
-	}
 
-	#introduction {
+	#main,
+	#introduction,
+	#button-get,
+	#links {
 		display: none;
 	}
 }
