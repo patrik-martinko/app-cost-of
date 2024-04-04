@@ -28,8 +28,7 @@
 		"action": "/",
 		"method": "GET",
 		"params": {
-			"text": "share",
-			"url": "link"
+			"text": "share"
 		}
 	}
 }

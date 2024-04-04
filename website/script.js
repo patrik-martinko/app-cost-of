@@ -209,11 +209,11 @@ const modal = new bootstrap.Modal(get('modal'), {
 get('modal').addEventListener('shown.bs.modal', () => {
 	get('email').focus();
 });
-const params = new URLSearchParams(document.location.search);
+const params = new URLSearchParams(location.search);
 if (params.get('mode') && params.get('mode') === 'signIn' && localStorage.getItem('email')) {
-	signInWithEmailLink(auth, localStorage.getItem('email'), window.location.href).then(() => {
+	signInWithEmailLink(auth, localStorage.getItem('email'), location.href).then(() => {
 		get('alerts').innerHTML = '<div class="alert alert-success alert-dismissible mb-7" role="alert">You have been signed in.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-		window.history.pushState({}, '', '/');
+		history.pushState({}, '', '/');
 	});
 }
 onAuthStateChanged(auth, (user) => {
@@ -266,7 +266,7 @@ onAuthStateChanged(auth, (user) => {
 		initSignIn();
 	}
 });
-const url = new URL(location);
-if (url.searchParams.get('share')) {
-	alert(url.searchParams.get('share') + ' ' + url.searchParams.get('link'));
+if (params.get('share')) {
+	show('route');
+	get('route-description').textContent = params.get('share');
 }
