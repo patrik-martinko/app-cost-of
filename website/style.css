@@ -31,7 +31,6 @@
 
 	#main {
 		padding-top: 13rem !important;
-		padding-bottom: 2rem !important;
 	}
 }
 
@@ -67,6 +66,7 @@
 
 	#main {
 		background: none;
+		padding-top: 3rem !important;
 	}
 
 	#introduction,
