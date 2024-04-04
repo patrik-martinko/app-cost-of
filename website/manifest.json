@@ -23,5 +23,12 @@
 			"sizes": "128x128",
 			"type": "image/png"
 		}
-	]
+	],
+	"share_target": {
+		"action": "/",
+		"method": "GET",
+		"params": {
+			"text": "share"
+		}
+	}
 }
