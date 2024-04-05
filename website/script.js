@@ -268,7 +268,7 @@ onAuthStateChanged(auth, (user) => {
 });
 if (params.get('share')) {
 	show('route');
-	const share = (/(.*km).*(https:\/\/.*)/gm).exec(params.get('share'));
+	const share = (/.*km.*(https:\/\/.*)/gm).exec(params.get('share'));
 	if (share) {
 		get('route-description').textContent = share[1];
 	}
