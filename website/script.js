@@ -272,5 +272,5 @@ if (params.get('share')) {
 	if (share) {
 		get('route-description').textContent = share[1];
 	}
-	// get('route-description').textContent = params.get('share');
+	get('route-description').textContent = params.get('share');
 }
