@@ -35,7 +35,7 @@ const input = (control, load) => {
 const calculate = (consumption, distance, price) => {
 	let dividing = 1
 	if (typeof distance === 'string') {
-		if (distance.includes(' m')) {
+		if (!distance.includes('km')) {
 			dividing = 1000;
 		}
 		distance = distance.replace(/[km\s]/g, '');
