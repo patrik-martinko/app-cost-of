@@ -32,6 +32,23 @@ const input = (control, load) => {
 		update();
 	}
 };
+const calculate = (consumption, distance, price) => {
+	let dividing = 1
+	if (typeof distance === 'string') {
+		if (distance.includes(' m')) {
+			dividing = 1000;
+		}
+		distance = distance.replace(/[km\s]/g, '');
+		if (![distance.length - 2, distance.length - 3].includes(distance.indexOf('.'))) {
+			distance = distance.replace('.', '');
+		}
+		if ([distance.length - 2, distance.length - 3].includes(distance.indexOf(','))) {
+			distance = distance.replace(',', '.');
+		}
+		distance = distance.replace(',', '');
+	}
+	return (distance / dividing * consumption * price).toFixed(2);
+};
 const update = () => {
 	const type = {
 		'gasoline-95': 2,
@@ -46,8 +63,13 @@ const update = () => {
 			show('control-consumptionElectricity');
 			show('control-priceElectricity');
 			show('data-trip');
-			get('cost-trip').textContent = (options.consumptionElectricity * options.priceElectricity * 100).toFixed(2) + '€';
+			get('cost-trip').value = calculate(options.consumptionElectricity, options.trip, options.priceElectricity);
+			if (share) {
+				get('cost-route').textContent = calculate(options.consumptionElectricity, share[2], options.priceElectricity) + '€';
+			}
 		}
+		hide('box-history');
+		hide('box-countries');
 	} else {
 		show('data-current');
 		if (localStorage.getItem('setup')) {
@@ -62,83 +84,88 @@ const update = () => {
 			if (data[key][0] == options.country) {
 				const price = data[key][type];
 				get('price').textContent = price + '€/l';
-				get('cost-trip').value = (options.consumption * options.trip / 100 * price).toFixed(2);
+				get('cost-trip').value = calculate(options.consumption / 100, options.trip, price);
+				if (share) {
+					get('cost-route').textContent = calculate(options.consumption / 100, share[2], price) + '€';
+				}
 			}
 		}
-	}
-	const chartData = structuredClone(data);
-	chartData.splice(0, 1);
-	for (let i = 0; i < chartData.length; i++) {
-		if (!chartData[i][type]) {
-			chartData.splice(i, 1);
-		}
-	}
-	chartData.sort((a, b) => {
-		return b[type] - a[type];
-	});
-	const labels = chartData.map(record => record[1]);
-	const colors = chartData.map(record => record[0] === options.country ? '#0d6efd' : '#212529');
-	if (charts.countries === null) {
-		charts.countries = new Chart('chart-countries', {
-			type: 'bar',
-			data: {
-				labels: labels,
-				datasets: [{
-					label: typeName + ' (€/l)',
-					data: chartData.map(record => record[type]),
-					backgroundColor: colors,
-					borderRadius: 3
-				}]
-			},
-			options: {
-				maintainAspectRatio: false
+		show('box-history');
+		show('box-countries');
+		const chartData = structuredClone(data);
+		chartData.splice(0, 1);
+		for (let i = 0; i < chartData.length; i++) {
+			if (!chartData[i][type]) {
+				chartData.splice(i, 1);
 			}
+		}
+		chartData.sort((a, b) => {
+			return b[type] - a[type];
 		});
-	} else {
-		charts.countries.data.labels = labels;
-		charts.countries.data.datasets[0].label = typeName + ' (€/l)';
-		charts.countries.data.datasets[0].data = chartData.map(record => record[type]);
-		charts.countries.data.datasets[0].backgroundColor = colors;
-		charts.countries.update();
-	}
-	fetch('https://script.google.com/macros/s/AKfycbzNGzvH8k5Uzk7NiT8wBSiauUZjMciW2SsYa2ocJGabUC1UqOTC6GA7K9Fjz1r7qnUC/exec?country=' + options.country).then(response => response.json()).then(response => {
-		const columns = response[0].length === 4 ? [0, 1, 2] : [0, 1];
-		const labels = response.map(record => record[0]);
-		const colors = {
-			primary: '#0d6efd',
-			border: ['#909090', '#505050'],
-			background: ['#909090', '#505050']
-		}
-		const data = {
-			labels: labels,
-			datasets: columns.map(index => {
-				return {
-					label: get('type').options[index].textContent + ' (€/l)',
-					data: response.map(record => record[index + 1]),
-					borderColor: index + 2 === type ? colors.primary : colors.border.pop(),
-					backgroundColor: index + 2 === type ? colors.primary : colors.background.pop(),
-					tension: 0.5
-				};
-			})
-		};
-		if (charts.history === null) {
-			charts.history = new Chart('chart-history', {
-				type: 'line',
-				data: data,
+		const labels = chartData.map(record => record[1]);
+		const colors = chartData.map(record => record[0] === options.country ? '#0d6efd' : '#212529');
+		if (charts.countries === null) {
+			charts.countries = new Chart('chart-countries', {
+				type: 'bar',
+				data: {
+					labels: labels,
+					datasets: [{
+						label: typeName + ' (€/l)',
+						data: chartData.map(record => record[type]),
+						backgroundColor: colors,
+						borderRadius: 3
+					}]
+				},
 				options: {
-					maintainAspectRatio: false,
-					elements: {
-						point: {
-							radius: 1
-						}
-					}
+					maintainAspectRatio: false
 				}
 			});
 		} else {
-			charts.history.data = data;
-			charts.history.update();
+			charts.countries.data.labels = labels;
+			charts.countries.data.datasets[0].label = typeName + ' (€/l)';
+			charts.countries.data.datasets[0].data = chartData.map(record => record[type]);
+			charts.countries.data.datasets[0].backgroundColor = colors;
+			charts.countries.update();
 		}
-	});
+		fetch('https://script.google.com/macros/s/AKfycbzNGzvH8k5Uzk7NiT8wBSiauUZjMciW2SsYa2ocJGabUC1UqOTC6GA7K9Fjz1r7qnUC/exec?country=' + options.country).then(response => response.json()).then(response => {
+			const columns = response[0].length === 4 ? [0, 1, 2] : [0, 1];
+			const labels = response.map(record => record[0]);
+			const colors = {
+				primary: '#0d6efd',
+				border: ['#909090', '#505050'],
+				background: ['#909090', '#505050']
+			}
+			const data = {
+				labels: labels,
+				datasets: columns.map(index => {
+					return {
+						label: get('type').options[index].textContent + ' (€/l)',
+						data: response.map(record => record[index + 1]),
+						borderColor: index + 2 === type ? colors.primary : colors.border.pop(),
+						backgroundColor: index + 2 === type ? colors.primary : colors.background.pop(),
+						tension: 0.5
+					};
+				})
+			};
+			if (charts.history === null) {
+				charts.history = new Chart('chart-history', {
+					type: 'line',
+					data: data,
+					options: {
+						maintainAspectRatio: false,
+						elements: {
+							point: {
+								radius: 1
+							}
+						}
+					}
+				});
+			} else {
+				charts.history.data = data;
+				charts.history.update();
+			}
+		});
+	}
 };
 const controls = document.getElementsByClassName('control');
 for (let control of controls) {
@@ -218,7 +245,7 @@ if (params.get('mode') && params.get('mode') === 'signIn' && localStorage.getIte
 }
 onAuthStateChanged(auth, (user) => {
 	const initSignIn = () => {
-		get('account').innerHTML = '<a href="" id="button-signin" class="text-muted">Sync settings across your devices</a>';
+		get('account').innerHTML = '<a id="button-signin" class="text-muted">Sync settings across your devices</a>';
 		if (localStorage.getItem('setup')) {
 			show('button-get');
 		} else {
@@ -266,10 +293,12 @@ onAuthStateChanged(auth, (user) => {
 		initSignIn();
 	}
 });
+let share;
 if (params.get('share')) {
 	show('route');
-	const share = (/(.*\(([\d.,]+)\s(km)\)).*(https:\/\/.*)/s).exec(params.get('share'));
+	share = (/(.*\(([\d.,\skm]+)\)).*(https:\/\/.*)/s).exec(params.get('share'));
 	if (share) {
-		get('route-description').textContent = share[1];
+		get('description-route').textContent = share[1];
+		get('link-route').setAttribute('href', share[3]);
 	}
 }
