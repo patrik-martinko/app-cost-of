@@ -184,7 +184,7 @@ get('button-setup').onclick = () => {
 get('button-get').onclick = () => {
 	get('links').scrollIntoView();
 };
-window.ombeforeinstallprompt = event => {
+addEventListener('beforeinstallprompt', event => {
 	event.preventDefault();
 	get('button-setup').setAttribute('class', 'btn btn-secondary mb-3');
 	show('button-get');
@@ -192,7 +192,7 @@ window.ombeforeinstallprompt = event => {
 	get('button-get').onclick = () => {
 		event.prompt();
 	};
-};
+});
 let countryDetecting = false;
 get('country').onclick = () => {
 	if (countryDetecting) {
