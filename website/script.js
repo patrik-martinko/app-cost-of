@@ -184,14 +184,15 @@ get('button-setup').onclick = () => {
 get('button-get').onclick = () => {
 	get('links').scrollIntoView();
 };
-addEventListener('beforeinstallprompt', event => {
+window.ombeforeinstallprompt = event => {
 	event.preventDefault();
+	get('button-setup').setAttribute('class', 'btn btn-secondary mb-3');
 	show('button-get');
 	get('button-get').textContent = 'Install the application';
 	get('button-get').onclick = () => {
 		event.prompt();
 	};
-});
+};
 let countryDetecting = false;
 get('country').onclick = () => {
 	if (countryDetecting) {
