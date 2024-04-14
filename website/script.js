@@ -184,6 +184,12 @@ get('button-setup').onclick = () => {
 get('button-get').onclick = () => {
 	get('links').scrollIntoView();
 };
+addEventListener('beforeinstallprompt', event => {
+	event.preventDefault();
+	get('button-get').onclick = () => {
+		event.prompt();
+	};
+});
 let countryDetecting = false;
 get('country').onclick = () => {
 	if (countryDetecting) {
