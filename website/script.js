@@ -186,6 +186,7 @@ get('button-get').onclick = () => {
 };
 addEventListener('beforeinstallprompt', event => {
 	event.preventDefault();
+	get('button-get').textContent = 'Install the application';
 	get('button-get').onclick = () => {
 		event.prompt();
 	};
