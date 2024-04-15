@@ -84,9 +84,9 @@ const update = () => {
 			if (data[key][0] == options.country) {
 				const price = data[key][type];
 				get('price').textContent = price + '€/l';
-				get('cost-trip').value = calculate(options.consumption / 100, options.trip, price);
+				get('cost-trip').value = calculate(options.consumption * 1000 / 100, options.trip, price);
 				if (share) {
-					get('cost-route').textContent = calculate(options.consumption / 100, share[2], price) + '€';
+					get('cost-route').textContent = calculate(options.consumption * 1000 / 100, share[2], price) + '€';
 				}
 			}
 		}
