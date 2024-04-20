@@ -24,11 +24,6 @@
 }
 
 @media (max-width: 767.98px) {
-	.box {
-		padding-left: 1rem !important;
-		padding-right: 1rem !important;
-	}
-
 	#main {
 		padding-top: 13rem !important;
 	}
@@ -67,12 +62,10 @@ print {
 
 	#main {
 		background: none;
-		padding-top: 3rem !important;
+		padding-top: 1rem !important;
 	}
 
-	#introduction,
-	#button-get,
-	#links {
+	.app-hide {
 		display: none;
 	}
 }
