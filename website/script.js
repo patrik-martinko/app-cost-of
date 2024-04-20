@@ -188,7 +188,6 @@ get('button-get').onclick = () => {
 	get('links').scrollIntoView();
 };
 addEventListener('beforeinstallprompt', event => {
-	event.preventDefault();
 	get('button-setup').setAttribute('class', 'btn btn-secondary mb-3');
 	show('button-get');
 	get('button-get').textContent = 'Install the application';
