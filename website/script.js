@@ -33,10 +33,12 @@ const input = (control, load) => {
 	}
 };
 const calculate = (consumption, distance, price) => {
-	let dividing = 1
+	let dividing = 1000;
 	if (typeof distance === 'string') {
-		if (!distance.includes('km')) {
+		if (distance.includes('km')) {
 			dividing = 1000;
+		} else if (distance.includes('m')) {
+			dividing = 1;
 		}
 		distance = distance.replace(/[km\s]/g, '');
 		if (![distance.length - 2, distance.length - 3].includes(distance.indexOf('.'))) {
@@ -46,6 +48,7 @@ const calculate = (consumption, distance, price) => {
 			distance = distance.replace(',', '.');
 		}
 		distance = distance.replace(',', '');
+		distance = Number(distance);
 	}
 	return (distance / dividing * consumption * price).toFixed(2);
 };
