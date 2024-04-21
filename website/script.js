@@ -130,7 +130,7 @@ const update = () => {
 			charts.countries.data.datasets[0].backgroundColor = colors;
 			charts.countries.update();
 		}
-		fetch('https://script.google.com/macros/s/AKfycbzNGzvH8k5Uzk7NiT8wBSiauUZjMciW2SsYa2ocJGabUC1UqOTC6GA7K9Fjz1r7qnUC/exec?country=' + options.country).then(response => response.json()).then(response => {
+		fetch(`https://data.costof.app/${options.country}.json`).then(response => response.json()).then(response => {
 			const columns = response[0].length === 4 ? [0, 1, 2] : [0, 1];
 			const labels = response.map(record => record[0]);
 			const colors = {
@@ -224,7 +224,7 @@ if (!localStorage.getItem('country')) {
 	get('country').value = localStorage.getItem('country');
 	input(get('country'), false);
 }
-fetch('https://script.google.com/macros/s/AKfycbzNGzvH8k5Uzk7NiT8wBSiauUZjMciW2SsYa2ocJGabUC1UqOTC6GA7K9Fjz1r7qnUC/exec').then(response => response.json()).then(response => {
+fetch('https://data.costof.app/all.json').then(response => response.json()).then(response => {
 	data = response;
 	update();
 });
