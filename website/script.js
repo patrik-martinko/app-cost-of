@@ -207,10 +207,10 @@ if (!localStorage.getItem('country')) {
 	const option = document.createElement('option');
 	option.textContent = 'Detecting country...';
 	get('country').prepend(option);
-	fetch('https://api.ipregistry.co/?key=kpebi6wx7c0b7v6w').then(response => response.json()).then(response => {
+	fetch('https://data.costof.app/detection').then(response => response.text()).then(response => {
 		if (countryDetecting) {
 			const control = get('country');
-			control.value = response.location.country.code;
+			control.value = response;
 			control.firstChild.remove();
 			input(control, false);
 		}
