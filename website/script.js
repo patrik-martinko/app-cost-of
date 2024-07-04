@@ -224,7 +224,7 @@ if (!localStorage.getItem('country')) {
 	get('country').value = localStorage.getItem('country');
 	input(get('country'), false);
 }
-fetch('https://data.costof.app/all.json').then(response => response.json()).then(response => {
+fetch('https://data.costof.app/ALL.json').then(response => response.json()).then(response => {
 	data = response;
 	update();
 });
