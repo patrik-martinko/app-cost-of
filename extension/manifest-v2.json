@@ -1,8 +1,7 @@
 {
     "permissions": [
         "storage",
-        "https://script.google.com/*",
-        "https://script.googleusercontent.com/*"
+        "https://data.costof.app/*"
     ],
     "background": {
         "scripts": [

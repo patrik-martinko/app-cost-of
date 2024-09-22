@@ -41,7 +41,7 @@ if (location.host === 'costof.app') {
         }
         const handle = () => {
             if (options.type !== 'electricity' && price === undefined) {
-                fetch('https://script.google.com/macros/s/AKfycby5CcRVznevNoWZeexy0m1DSeOX4Kg1FeMgxFdXlr4sySwgehnIr4T23Q5ooWDtR1iB/exec').then(response => {
+                fetch('https://data.costof.app/ALL.json').then(response => {
                     response.json().then(data => {
                         for (let key in data) {
                             if (data[key][0] == options.country) {
