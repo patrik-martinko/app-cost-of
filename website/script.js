@@ -6,19 +6,9 @@ let charts = {
 	countries: null,
 	history: null
 };
-const get = id => {
-	return document.getElementById(id);
-};
-const show = id => {
-	const element = document.getElementById(id);
-	element.setAttribute('class', element.getAttribute('class').replace('d-none', ''));
-};
-const hide = id => {
-	const element = document.getElementById(id);
-	if (element.getAttribute('class').indexOf('d-none') === -1) {
-		element.setAttribute('class', element.getAttribute('class') + ' d-none');
-	}
-};
+const get = id => document.getElementById(id);
+const show = id => get(id).classList.remove('d-none');
+const hide = id => get(id).classList.add('d-none');
 const input = (control, load) => {
 	let id = control.getAttribute('id');
 	options[id] = control.value;
@@ -204,9 +194,7 @@ get('country').onclick = () => {
 };
 if (!localStorage.getItem('country')) {
 	countryDetecting = true;
-	const option = document.createElement('option');
-	option.textContent = 'Detecting country...';
-	get('country').prepend(option);
+	get('country').insertAdjacentHTML('afterbegin', '<option>Detecting country...</option>');
 	fetch('https://data.costof.app/detection').then(response => response.text()).then(response => {
 		if (countryDetecting) {
 			const control = get('country');
