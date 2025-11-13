@@ -298,7 +298,7 @@ if (params.get('share')) {
 	// share = (/(.*\(([\d\.,]+\sk*m)\)).*(https:\/\/.*)/s).exec(params.get('share'));
 	share = params.get('share');
 	if (share) {
-		get('description-route').textContent = share[1].replace('Shared route', '');
-		get('link-route').setAttribute('href', share[3]);
+		get('description-route').textContent = share; // share[1].replace('Shared route', '');
+		get('link-route').setAttribute('href', share);
 	}
 }
