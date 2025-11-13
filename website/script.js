@@ -294,9 +294,9 @@ onAuthStateChanged(auth, (user) => {
 });
 let share;
 if (params.get('share')) {
-	alert(params.get('share'));
 	show('route');
-	share = (/(.*\(([\d\.,]+\sk*m)\)).*(https:\/\/.*)/s).exec(params.get('share'));
+	// share = (/(.*\(([\d\.,]+\sk*m)\)).*(https:\/\/.*)/s).exec(params.get('share'));
+	share = params.get('share');
 	if (share) {
 		get('description-route').textContent = share[1].replace('Shared route', '');
 		get('link-route').setAttribute('href', share[3]);
