@@ -294,6 +294,7 @@ onAuthStateChanged(auth, (user) => {
 });
 let share;
 if (params.get('share')) {
+	alert(params.get('share'));
 	show('route');
 	share = (/(.*\(([\d\.,]+\sk*m)\)).*(https:\/\/.*)/s).exec(params.get('share'));
 	if (share) {
