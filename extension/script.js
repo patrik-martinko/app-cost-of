@@ -15,7 +15,7 @@ if (location.host === 'costof.app') {
     const formatCurrency = new Intl.NumberFormat(document.getElementsByTagName('html')[0].getAttribute('lang'), { style: 'currency', currency: 'EUR' });
     const get = options => {
         let price;
-        const element = document.querySelector('#QA0Szd');
+        const element = document.querySelector('div[role="main"]');
         const render = function () {
             document.querySelectorAll('div.ivN21e div').forEach(distanceElement => {
                 let distance = distanceElement.textContent;
