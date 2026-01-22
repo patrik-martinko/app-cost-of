@@ -13,9 +13,8 @@ if (location.host === 'costof.app') {
     }
 } else {
     const formatCurrency = new Intl.NumberFormat(document.getElementsByTagName('html')[0].getAttribute('lang'), { style: 'currency', currency: 'EUR' });
-    const get = options => {
+    chrome.storage.sync.get(options, options => {
         let price;
-        const element = document.querySelector('div[role="main"]');
         const render = function () {
             document.querySelectorAll('div.ivN21e div').forEach(distanceElement => {
                 let distance = distanceElement.textContent;
@@ -59,9 +58,14 @@ if (location.host === 'costof.app') {
                 render();
             }
         };
-        const observer = new MutationObserver(handle);
-        observer.observe(element, { childList: true, subtree: true });
-        handle();
-    };
-    chrome.storage.sync.get(options, get);
+        const interval = setInterval(() => {
+            const element = document.querySelector('div[role="main"]');
+            if (element !== null) {
+                clearInterval(interval);
+                const observer = new MutationObserver(handle);
+                observer.observe(element, { childList: true, subtree: true });
+                handle();
+            }
+        }, 500);
+    });
 }
