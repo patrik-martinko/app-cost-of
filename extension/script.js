@@ -16,27 +16,29 @@ if (location.host === 'costof.app') {
     chrome.storage.sync.get(options, options => {
         let price;
         const render = function () {
-            document.querySelectorAll('div.ivN21e div').forEach(distanceElement => {
-                let distance = distanceElement.textContent;
-                if (distance.indexOf('(') === -1) {
-                    const dividing = distance.indexOf(' m') !== -1 ? 1000 : 1;
-                    distance = distance.replace(/[km\s]/g, '');
-                    if (![distance.length - 2, distance.length - 3].includes(distance.indexOf('.'))) {
-                        distance = distance.replace('.', '');
+            setTimeout(() => {
+                document.querySelectorAll('div.ivN21e div').forEach(distanceElement => {
+                    let distance = distanceElement.textContent;
+                    if (distance.indexOf('(') === -1) {
+                        const dividing = distance.indexOf(' m') !== -1 ? 1000 : 1;
+                        distance = distance.replace(/[km\s]/g, '');
+                        if (![distance.length - 2, distance.length - 3].includes(distance.indexOf('.'))) {
+                            distance = distance.replace('.', '');
+                        }
+                        if ([distance.length - 2, distance.length - 3].includes(distance.indexOf(','))) {
+                            distance = distance.replace(',', '.');
+                        }
+                        distance = distance.replace(',', '');
+                        if (options.type === 'electricity') {
+                            distanceElement.textContent += ' (' + formatCurrency.format((distance / dividing * options.consumptionElectric * options.priceElectric).toFixed(2)) + ')';
+                            distanceElement.setAttribute('title', formatCurrency.format(options.priceElectric) + '/kWh');
+                        } else {
+                            distanceElement.textContent += ' (' + formatCurrency.format((distance / dividing / 100 * options.consumption * price).toFixed(2)) + ')';
+                            distanceElement.setAttribute('title', formatCurrency.format(price) + '/' + (options.type === 'cng' ? 'kg' : 'l'));
+                        }
                     }
-                    if ([distance.length - 2, distance.length - 3].includes(distance.indexOf(','))) {
-                        distance = distance.replace(',', '.');
-                    }
-                    distance = distance.replace(',', '');
-                    if (options.type === 'electricity') {
-                        distanceElement.textContent += ' (' + formatCurrency.format((distance / dividing * options.consumptionElectric * options.priceElectric).toFixed(2)) + ')';
-                        distanceElement.setAttribute('title', formatCurrency.format(options.priceElectric) + '/kWh');
-                    } else {
-                        distanceElement.textContent += ' (' + formatCurrency.format((distance / dividing / 100 * options.consumption * price).toFixed(2)) + ')';
-                        distanceElement.setAttribute('title', formatCurrency.format(price) + '/' + (options.type === 'cng' ? 'kg' : 'l'));
-                    }
-                }
-            });
+                });
+            }, 1000);
         }
         const handle = () => {
             if (options.type !== 'electricity' && price === undefined) {
