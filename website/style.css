@@ -10,6 +10,10 @@
 	height: 60vh;
 }
 
+.choices__inner {
+	background-color: #fff;
+}
+
 #main {
 	background: top right/120% no-repeat url('background.png');
 }

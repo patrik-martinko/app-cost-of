@@ -185,6 +185,7 @@ addEventListener('beforeinstallprompt', event => {
 		event.prompt();
 	};
 });
+new Choices(get('country'));
 let countryDetecting = false;
 get('country').onclick = () => {
 	if (countryDetecting) {
