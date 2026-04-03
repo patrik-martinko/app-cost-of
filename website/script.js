@@ -193,7 +193,7 @@ countries.forEach(item => {
 	item.addEventListener('click', () => {
 		country.value = item.getAttribute('value');
 		input(country, false);
-		country.textContent = item.textContent;
+		country.innerHTML = item.innerHTML;
 		countrySearch.value = '';
 		countries.forEach(item => item.style.display = '');
 	});
@@ -221,7 +221,7 @@ if (!localStorage.getItem('country')) {
 	fetch('https://data.costof.app/detection').then(response => response.text()).then(response => {
 		if (countryDetecting) {
 			country.value = response;
-			country.textContent = document.querySelector(`#countries [value="${country.value}"]`).textContent;
+			country.innerHTML = document.querySelector(`#countries [value="${country.value}"]`).innerHTML;
 			input(country, false);
 		}
 	}).catch(reason => {
@@ -232,7 +232,7 @@ if (!localStorage.getItem('country')) {
 	});
 } else {
 	country.value = localStorage.getItem('country');
-	country.textContent = document.querySelector(`#countries [value="${country.value}"]`).textContent;
+	country.innerHTML = document.querySelector(`#countries [value="${country.value}"]`).innerHTML;
 	input(country, false);
 }
 fetch('https://data.costof.app/ALL.json').then(response => response.json()).then(response => {
