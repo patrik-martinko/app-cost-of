@@ -185,33 +185,55 @@ addEventListener('beforeinstallprompt', event => {
 		event.prompt();
 	};
 });
-new Choices(get('country'));
+const country = get('country');
+const countrySearch = get('country-search');
+const countries = document.querySelectorAll('#countries .dropdown-item');
+countrySearch.addEventListener('click', event => event.stopPropagation());
+countries.forEach(item => {
+	item.addEventListener('click', () => {
+		country.value = item.getAttribute('value');
+		input(country, false);
+		country.textContent = item.textContent;
+		countrySearch.value = '';
+		countries.forEach(item => item.style.display = '');
+	});
+});
+countrySearch.addEventListener('keyup', () => {
+	const filter = countrySearch.value.toLowerCase();
+	countries.forEach(item => {
+		const text = item.textContent.toLowerCase();
+		if (text.includes(filter)) {
+			item.style.display = '';
+		} else {
+			item.style.display = 'none';
+		}
+	});
+});
 let countryDetecting = false;
-get('country').onclick = () => {
+country.onclick = () => {
 	if (countryDetecting) {
 		countryDetecting = false;
-		get('country').firstChild.remove();
 	}
 };
 if (!localStorage.getItem('country')) {
 	countryDetecting = true;
-	get('country').insertAdjacentHTML('afterbegin', '<option>Detecting country...</option>');
+	country.textContent = 'Detecting country...';
 	fetch('https://data.costof.app/detection').then(response => response.text()).then(response => {
 		if (countryDetecting) {
-			const control = get('country');
-			control.value = response;
-			control.firstChild.remove();
-			input(control, false);
+			country.value = response;
+			country.textContent = document.querySelector(`#countries [value="${country.value}"]`).textContent;
+			input(country, false);
 		}
 	}).catch(reason => {
 		if (countryDetecting) {
 			countryDetecting = false;
-			get('country').firstChild.remove();
+			country.textContent = 'Detection failed, click to select';
 		}
 	});
 } else {
-	get('country').value = localStorage.getItem('country');
-	input(get('country'), false);
+	country.value = localStorage.getItem('country');
+	country.textContent = document.querySelector(`#countries [value="${country.value}"]`).textContent;
+	input(country, false);
 }
 fetch('https://data.costof.app/ALL.json').then(response => response.json()).then(response => {
 	data = response;

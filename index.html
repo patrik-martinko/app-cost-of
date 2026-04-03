@@ -54,35 +54,48 @@
 							<form class="mb-4">
 								<div id="control-country">
 									<label for="country" class="form-label">Select the country where you refuel</label>
-									<select id="country" class="control form-select" aria-label="country">
-										<option value="AT">Austria</option>
-										<option value="BE">Belgium</option>
-										<option value="BG">Bulgaria</option>
-										<option value="HR">Croatia</option>
-										<option value="CY">Cyprus</option>
-										<option value="CZ">Czechia</option>
-										<option value="DK">Denmark</option>
-										<option value="EE">Estonia</option>
-										<option value="FI">Finland</option>
-										<option value="FR">France</option>
-										<option value="DE">Germany</option>
-										<option value="GR">Greece</option>
-										<option value="HU">Hungary</option>
-										<option value="IE">Ireland</option>
-										<option value="IT">Italy</option>
-										<option value="LV">Latvia</option>
-										<option value="LT">Lithuania</option>
-										<option value="LU">Luxembourg</option>
-										<option value="MT">Malta</option>
-										<option value="NL">Netherlands</option>
-										<option value="PL">Poland</option>
-										<option value="PT">Portugal</option>
-										<option value="RO">Romania</option>
-										<option value="SK">Slovakia</option>
-										<option value="SI">Slovenia</option>
-										<option value="ES">Spain</option>
-										<option value="SE">Sweden</option>
-									</select>
+									<div class="dropdown">
+										<button id="country" class="form-select text-start" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+											Country
+										</button>
+										<ul class="dropdown-menu w-100 shadow-sm" aria-labelledby="dropdownMenuButton">
+											<li class="px-3 py-2"><input id="country-search" type="text" class="form-control" placeholder="Search..." autocomplete="off"></li>
+											<li>
+												<hr class="dropdown-divider">
+											</li>
+											<li>
+												<ul id="countries" class="list-unstyled mb-0" style="max-height: 200px; overflow-y: auto;">
+													<li><a class="dropdown-item" value="AT">Austria</a></li>
+													<li><a class="dropdown-item" value="BE">Belgium</a></li>
+													<li><a class="dropdown-item" value="BG">Bulgaria</a></li>
+													<li><a class="dropdown-item" value="HR">Croatia</a></li>
+													<li><a class="dropdown-item" value="CY">Cyprus</a></li>
+													<li><a class="dropdown-item" value="CZ">Czechia</a></li>
+													<li><a class="dropdown-item" value="DK">Denmark</a></li>
+													<li><a class="dropdown-item" value="EE">Estonia</a></li>
+													<li><a class="dropdown-item" value="FI">Finland</a></li>
+													<li><a class="dropdown-item" value="FR">France</a></li>
+													<li><a class="dropdown-item" value="DE">Germany</a></li>
+													<li><a class="dropdown-item" value="GR">Greece</a></li>
+													<li><a class="dropdown-item" value="HU">Hungary</a></li>
+													<li><a class="dropdown-item" value="IE">Ireland</a></li>
+													<li><a class="dropdown-item" value="IT">Italy</a></li>
+													<li><a class="dropdown-item" value="LV">Latvia</a></li>
+													<li><a class="dropdown-item" value="LT">Lithuania</a></li>
+													<li><a class="dropdown-item" value="LU">Luxembourg</a></li>
+													<li><a class="dropdown-item" value="MT">Malta</a></li>
+													<li><a class="dropdown-item" value="NL">Netherlands</a></li>
+													<li><a class="dropdown-item" value="PL">Poland</a></li>
+													<li><a class="dropdown-item" value="PT">Portugal</a></li>
+													<li><a class="dropdown-item" value="RO">Romania</a></li>
+													<li><a class="dropdown-item" value="SK">Slovakia</a></li>
+													<li><a class="dropdown-item" value="SI">Slovenia</a></li>
+													<li><a class="dropdown-item" value="ES">Spain</a></li>
+													<li><a class="dropdown-item" value="SE">Sweden</a></li>
+												</ul>
+											</li>
+										</ul>
+									</div>
 								</div>
 								<div id="control-type">
 									<label for="type" class="form-label mt-2">Fuel source</label>
@@ -203,7 +216,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js" integrity="sha256-cHVO4dqZfamRhWD7s4iXyaXWVK10odD+qp4xidFzqTI=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 	<script src="extension/options.js"></script>
-	<script type="module" src="website/script.js?v=64"></script>
+	<script type="module" src="website/script.js?v=65"></script>
 </body>
 
 </html>
