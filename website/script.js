@@ -320,7 +320,7 @@ if (params.get('share')) {
 	const link = params.get('share');
 	fetch(`https://data.costof.app/direction?link=${link}`).then(response => response.json()).then(response => {
 		if (response.routes) {
-			route = response.routes[0].distanceMeters;
+			route = response.routes[0].distanceMeters / 1000;
 			update();
 			get('link-route').setAttribute('href', link);
 			show('route');
