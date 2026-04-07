@@ -57,8 +57,8 @@ const update = () => {
 			show('control-priceElectricity');
 			show('data-trip');
 			get('cost-trip').value = calculate(options.consumptionElectricity, options.trip, options.priceElectricity);
-			if (share) {
-				get('cost-route').textContent = calculate(options.consumptionElectricity, share[2], options.priceElectricity) + '€';
+			if (route) {
+				get('cost-route').textContent = calculate(options.consumptionElectricity, route, options.priceElectricity) + '€';
 			}
 		}
 		hide('box-history');
@@ -78,8 +78,8 @@ const update = () => {
 				const price = data[key][type];
 				get('price').textContent = price + '€/l';
 				get('cost-trip').value = calculate(options.consumption * 1000 / 100, options.trip, price);
-				if (share) {
-					get('cost-route').textContent = calculate(options.consumption * 1000 / 100, share[2], price) + '€';
+				if (route) {
+					get('cost-route').textContent = calculate(options.consumption * 1000 / 100, route, price) + '€';
 				}
 			}
 		}
@@ -315,13 +315,15 @@ onAuthStateChanged(auth, (user) => {
 		initSignIn();
 	}
 });
-let share;
+let route;
 if (params.get('share')) {
-	show('route');
-	// share = (/(.*\(([\d\.,]+\sk*m)\)).*(https:\/\/.*)/s).exec(params.get('share'));
-	share = params.get('share');
-	if (share) {
-		get('description-route').textContent = share; // share[1].replace('Shared route', '');
-		get('link-route').setAttribute('href', share);
-	}
+	const link = params.get('share');
+	fetch(`https://data.costof.app/direction?link=${link}`).then(response => response.json()).then(response => {
+		if (response.routes) {
+			route = response.routes[0].distanceMeters;
+			update();
+			get('link-route').setAttribute('href', link);
+			show('route');
+		}
+	});
 }
