@@ -58,7 +58,7 @@ const update = () => {
 			show('data-trip');
 			get('cost-trip').value = calculate(options.consumptionElectricity, options.trip, options.priceElectricity);
 			if (route) {
-				get('cost-route').textContent = calculate(options.consumptionElectricity, route, options.priceElectricity) + '€';
+				get('route-cost').textContent = calculate(options.consumptionElectricity, route, options.priceElectricity) + '€';
 			}
 		}
 		hide('box-history');
@@ -79,7 +79,7 @@ const update = () => {
 				get('price').textContent = price + '€/l';
 				get('cost-trip').value = calculate(options.consumption * 1000 / 100, options.trip, price);
 				if (route) {
-					get('cost-route').textContent = calculate(options.consumption * 1000 / 100, route, price) + '€';
+					get('route-cost').textContent = calculate(options.consumption * 1000 / 100, route, price) + '€';
 				}
 			}
 		}
@@ -322,7 +322,8 @@ if (params.get('share')) {
 		if (response.routes) {
 			route = response.routes[0].distanceMeters / 1000;
 			update();
-			get('link-route').setAttribute('href', link);
+			get('route-description').textContent = `From ${response.origin} to ${response.destination}: ${response.routes[0].localizedValues.duration.text} (${response.routes[0].localizedValues.distance.text})`;
+			get('route-link').setAttribute('href', link);
 			show('route');
 		}
 	});
