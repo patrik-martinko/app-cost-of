@@ -192,6 +192,7 @@ countrySearch.addEventListener('click', event => event.stopPropagation());
 countries.forEach(item => {
 	item.addEventListener('click', () => {
 		country.value = item.getAttribute('value');
+		country.dispatchEvent(new Event('input'));
 		input(country, false);
 		country.innerHTML = item.innerHTML;
 		countrySearch.value = '';
