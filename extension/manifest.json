@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "Cost of driving in Google Maps",
-    "description": "Automatically show the cost of rides by your vehicle in the Google Maps' list of routes based on the current average fuel price.",
-    "version": "2.1.2",
+    "description": "Automatically display your vehicle's driving costs in Google Maps route options based on current average fuel prices.",
+    "version": "2.1.3",
     "permissions": [
         "storage"
     ],

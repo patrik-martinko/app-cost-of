@@ -40,19 +40,17 @@ if (location.host === 'costof.app') {
         }
         const handle = () => {
             if (options.type !== 'electricity' && price === undefined) {
-                fetch('https://data.costof.app/ALL.json').then(response => {
-                    response.json().then(data => {
-                        for (let key in data) {
-                            if (data[key][0] == options.country) {
-                                price = data[key][{
-                                    'gasoline-95': 2,
-                                    'diesel': 3,
-                                    'lpg': 4
-                                }[options.type]];
-                            }
+                fetch('https://data.costof.app/ALL.json').then(response => response.json()).then(data => {
+                    data.forEach(item => {
+                        if (item[0] === options.country) {
+                            price = item[{
+                                'gasoline-95': 2,
+                                'diesel': 3,
+                                'lpg': 4
+                            }[options.type]];
                         }
-                        render();
                     });
+                    render();
                 });
             } else {
                 render();
