@@ -19,7 +19,7 @@ const input = (control, load) => {
 		}
 	} catch (error) { }
 	if (data) {
-		update();
+		update(id);
 	}
 };
 const calculate = (consumption, distance, price) => {
@@ -42,7 +42,8 @@ const calculate = (consumption, distance, price) => {
 	}
 	return (distance / dividing * consumption * price).toFixed(2);
 };
-const update = () => {
+const calculateDistance = (consumption, cost, price) => (cost / consumption / price * 1000).toFixed(2);
+const update = source => {
 	const type = {
 		'gasoline-95': 2,
 		'diesel': 3,
@@ -55,8 +56,12 @@ const update = () => {
 			hide('control-consumption');
 			show('control-consumptionElectricity');
 			show('control-priceElectricity');
-			show('data-trip');
-			get('cost-trip').value = calculate(options.consumptionElectricity, options.trip, options.priceElectricity);
+			show('trip-data');
+			if (source === 'tripCost') {
+				get('trip').value = calculateDistance(options.consumptionElectricity, options.tripCost, options.priceElectricity);
+			} else {
+				get('tripCost').value = calculate(options.consumptionElectricity, options.trip, options.priceElectricity);
+			}
 			if (route) {
 				get('route-cost').textContent = calculate(options.consumptionElectricity, route, options.priceElectricity) + '€';
 			}
@@ -69,15 +74,19 @@ const update = () => {
 			show('control-consumption');
 			hide('control-consumptionElectricity');
 			hide('control-priceElectricity');
-			show('data-trip');
+			show('trip-data');
 		}
-		get('selected-type').textContent = '(' + typeName + ')';
+		get('selected-type').innerHTML = 'for <strong>' + typeName + '</strong>';
 		get('latest-update').textContent = data[0][0];
 		for (let key in data) {
 			if (data[key][0] == options.country) {
 				const price = data[key][type];
 				get('price').textContent = price + '€/l';
-				get('cost-trip').value = calculate(options.consumption * 1000 / 100, options.trip, price);
+				if (source === 'tripCost') {
+					get('trip').value = calculateDistance(options.consumption * 1000 / 100, options.tripCost, price);
+				} else {
+					get('tripCost').value = calculate(options.consumption * 1000 / 100, options.trip, price);
+				}
 				if (route) {
 					get('route-cost').textContent = calculate(options.consumption * 1000 / 100, route, price) + '€';
 				}
@@ -85,88 +94,88 @@ const update = () => {
 		}
 		show('box-history');
 		show('box-countries');
-		const chartData = structuredClone(data);
-		chartData.splice(0, 1);
-		for (let i = 0; i < chartData.length; i++) {
-			if (!chartData[i][type]) {
-				chartData.splice(i, 1);
-			}
-		}
-		chartData.sort((a, b) => {
-			return b[type] - a[type];
-		});
-		const labels = chartData.map(record => record[1]);
-		const colors = chartData.map(record => record[0] === options.country ? '#0d6efd' : '#212529');
-		if (charts.countries === null) {
-			charts.countries = new Chart('chart-countries', {
-				type: 'bar',
-				data: {
-					labels: labels,
-					datasets: [{
-						label: typeName + ' (€/l)',
-						data: chartData.map(record => record[type]),
-						backgroundColor: colors,
-						borderRadius: 3
-					}]
-				},
-				options: {
-					maintainAspectRatio: false
+		if (!['trip', 'tripCost'].includes(source)) {
+			const chartData = structuredClone(data);
+			chartData.splice(0, 1);
+			for (let i = 0; i < chartData.length; i++) {
+				if (!chartData[i][type]) {
+					chartData.splice(i, 1);
 				}
-			});
-		} else {
-			charts.countries.data.labels = labels;
-			charts.countries.data.datasets[0].label = typeName + ' (€/l)';
-			charts.countries.data.datasets[0].data = chartData.map(record => record[type]);
-			charts.countries.data.datasets[0].backgroundColor = colors;
-			charts.countries.update();
-		}
-		fetch(`https://data.costof.app/${options.country}.json`).then(response => response.json()).then(response => {
-			const columns = response[0].length === 4 ? [0, 1, 2] : [0, 1];
-			const labels = response.map(record => record[0]);
-			const colors = {
-				primary: '#0d6efd',
-				border: ['#909090', '#505050'],
-				background: ['#909090', '#505050']
 			}
-			const data = {
-				labels: labels,
-				datasets: columns.map(index => {
-					return {
-						label: get('type').options[index].textContent + ' (€/l)',
-						data: response.map(record => record[index + 1]),
-						borderColor: index + 2 === type ? colors.primary : colors.border.pop(),
-						backgroundColor: index + 2 === type ? colors.primary : colors.background.pop(),
-						tension: 0.5
-					};
-				})
-			};
-			if (charts.history === null) {
-				charts.history = new Chart('chart-history', {
-					type: 'line',
-					data: data,
+			chartData.sort((a, b) => {
+				return b[type] - a[type];
+			});
+			const labels = chartData.map(record => record[1]);
+			const colors = chartData.map(record => record[0] === options.country ? '#0d6efd' : '#212529');
+			if (charts.countries === null) {
+				charts.countries = new Chart('chart-countries', {
+					type: 'bar',
+					data: {
+						labels: labels,
+						datasets: [{
+							label: typeName + ' (€/l)',
+							data: chartData.map(record => record[type]),
+							backgroundColor: colors,
+							borderRadius: 3
+						}]
+					},
 					options: {
-						maintainAspectRatio: false,
-						elements: {
-							point: {
-								radius: 1
-							}
-						}
+						maintainAspectRatio: false
 					}
 				});
 			} else {
-				charts.history.data = data;
-				charts.history.update();
+				charts.countries.data.labels = labels;
+				charts.countries.data.datasets[0].label = typeName + ' (€/l)';
+				charts.countries.data.datasets[0].data = chartData.map(record => record[type]);
+				charts.countries.data.datasets[0].backgroundColor = colors;
+				charts.countries.update();
 			}
-		});
+			fetch(`https://data.costof.app/${options.country}.json`).then(response => response.json()).then(response => {
+				const columns = response[0].length === 4 ? [0, 1, 2] : [0, 1];
+				const labels = response.map(record => record[0]);
+				const colors = {
+					primary: '#0d6efd',
+					border: ['#909090', '#505050'],
+					background: ['#909090', '#505050']
+				}
+				const data = {
+					labels: labels,
+					datasets: columns.map(index => {
+						return {
+							label: get('type').options[index].textContent + ' (€/l)',
+							data: response.map(record => record[index + 1]),
+							borderColor: index + 2 === type ? colors.primary : colors.border.pop(),
+							backgroundColor: index + 2 === type ? colors.primary : colors.background.pop(),
+							tension: 0.5
+						};
+					})
+				};
+				if (charts.history === null) {
+					charts.history = new Chart('chart-history', {
+						type: 'line',
+						data: data,
+						options: {
+							maintainAspectRatio: false,
+							elements: {
+								point: {
+									radius: 1
+								}
+							}
+						}
+					});
+				} else {
+					charts.history.data = data;
+					charts.history.update();
+				}
+			})
+		};
 	}
 };
 const controls = document.getElementsByClassName('control');
 for (let control of controls) {
 	let id = control.getAttribute('id');
 	control.value = options[id] = localStorage.getItem(id) ? localStorage.getItem(id) : options[id];
-	control.addEventListener('input', (event) => {
-		input(event.target, false);
-	});
+	control.addEventListener('input', event => input(event.target, false));
 }
 get('button-setup').onclick = () => {
 	localStorage.setItem('setup', true);

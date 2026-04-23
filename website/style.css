@@ -19,11 +19,11 @@
 }
 
 #trip,
-#cost-trip {
+#tripCost {
 	width: 5rem;
 }
 
-#data-trip {
+#trip-data {
 	line-height: 3rem;
 }
 
