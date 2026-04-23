@@ -54,13 +54,6 @@
 	}
 }
 
-@media (max-width: 1199.98px) {
-	#data-current {
-		margin-left: 0 !important;
-		margin-right: 0 !important;
-	}
-}
-
 @media (display-mode: standalone),
 print {
 
