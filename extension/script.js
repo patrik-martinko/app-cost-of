@@ -1,4 +1,5 @@
 if (location.host === 'costof.app') {
+    document.documentElement.setAttribute('app-cost-of', 'true');
     const set = control => {
         let option = {};
         option[control.getAttribute('id')] = control.value;
@@ -7,9 +8,7 @@ if (location.host === 'costof.app') {
     const controls = document.getElementsByClassName('control');
     for (let control of controls) {
         set(control);
-        control.addEventListener('input', event => {
-            set(event.target);
-        });
+        control.addEventListener('input', event => set(event.target));
     }
 } else {
     const formatCurrency = new Intl.NumberFormat(document.getElementsByTagName('html')[0].getAttribute('lang'), { style: 'currency', currency: 'EUR' });
