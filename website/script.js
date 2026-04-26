@@ -183,17 +183,14 @@ get('button-setup').onclick = () => {
 	show('button-get');
 	input(get('country'), true);
 };
-if (document.documentElement.hasAttribute('app-cost-of')) {
-	hide('button-get');
-} else {
-	get('button-get').onclick = () => {
-		if (navigator.userAgentData && navigator.userAgentData.brands.some(b => b.brand === 'Chromium')) {
-			get('button-get').setAttribute('href', 'https://chrome.google.com/webstore/detail/cost-of-driving-in-google/glajpeclpoeodmfofkelgedjphkdgmie');
-		} else {
-			get('button-get').setAttribute('href', 'https://addons.mozilla.org/en-US/firefox/addon/cost-of-driving-in-google-maps');
-		}
-	};
-}
+document.addEventListener('AppCostOf', () => hide('button-get'));
+get('button-get').onclick = () => {
+	if (navigator.userAgentData && navigator.userAgentData.brands.some(b => b.brand === 'Chromium')) {
+		get('button-get').setAttribute('href', 'https://chrome.google.com/webstore/detail/cost-of-driving-in-google/glajpeclpoeodmfofkelgedjphkdgmie');
+	} else {
+		get('button-get').setAttribute('href', 'https://addons.mozilla.org/en-US/firefox/addon/cost-of-driving-in-google-maps');
+	}
+};
 if (navigator.userAgentData && navigator.userAgentData.mobile) {
 	addEventListener('beforeinstallprompt', event => {
 		get('button-setup').setAttribute('class', get('button-setup').getAttribute('class').replace('btn btn-primary', 'btn btn-secondary mb-3'));

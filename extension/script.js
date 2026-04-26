@@ -1,5 +1,5 @@
 if (location.host === 'costof.app') {
-    document.documentElement.setAttribute('app-cost-of', 'true');
+    document.dispatchEvent(new CustomEvent('AppCostOf'));
     const set = control => {
         let option = {};
         option[control.getAttribute('id')] = control.value;
