@@ -187,10 +187,12 @@ document.addEventListener('AddonCostOf', () => {
 	get('button-get').textContent = 'Open Google Maps';
 	get('button-get').setAttribute('href', 'https://maps.google.com');
 });
-if (navigator.userAgentData && !navigator.userAgentData.mobile && navigator.userAgentData.brands.some(b => b.brand === 'Chromium')) {
-	get('button-get').setAttribute('href', 'https://chrome.google.com/webstore/detail/cost-of-driving-in-google/glajpeclpoeodmfofkelgedjphkdgmie');
-} else {
-	get('button-get').setAttribute('href', 'https://addons.mozilla.org/en-US/firefox/addon/cost-of-driving-in-google-maps');
+if (navigator.userAgentData && !navigator.userAgentData.mobile) {
+	if (navigator.userAgentData.brands.some(b => b.brand === 'Chromium')) {
+		get('button-get').setAttribute('href', 'https://chrome.google.com/webstore/detail/cost-of-driving-in-google/glajpeclpoeodmfofkelgedjphkdgmie');
+	} else {
+		get('button-get').setAttribute('href', 'https://addons.mozilla.org/en-US/firefox/addon/cost-of-driving-in-google-maps');
+	}
 }
 if (navigator.userAgentData && navigator.userAgentData.mobile) {
 	if (('getInstalledRelatedApps' in navigator) && ((await navigator.getInstalledRelatedApps()).length > 0)) {
