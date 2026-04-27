@@ -188,24 +188,18 @@ document.addEventListener('AddonCostOf', () => {
 	get('button-get').setAttribute('href', 'https://maps.google.com');
 });
 if (navigator.userAgentData && !navigator.userAgentData.mobile) {
-	if (navigator.userAgentData.brands.some(b => b.brand === 'Chromium')) {
-		get('button-get').setAttribute('href', 'https://chrome.google.com/webstore/detail/cost-of-driving-in-google/glajpeclpoeodmfofkelgedjphkdgmie');
-	} else {
-		get('button-get').setAttribute('href', 'https://addons.mozilla.org/en-US/firefox/addon/cost-of-driving-in-google-maps');
-	}
+	get('button-get').setAttribute('href', 'https://chrome.google.com/webstore/detail/cost-of-driving-in-google/glajpeclpoeodmfofkelgedjphkdgmie');
+} else if (!navigator.userAgentData) {
+	get('button-get').setAttribute('href', 'https://addons.mozilla.org/en-US/firefox/addon/cost-of-driving-in-google-maps');
 }
 if (navigator.userAgentData && navigator.userAgentData.mobile) {
-	if (!!(await navigator.getInstalledRelatedApps?.())?.length) {
-		get('button-get').textContent = 'Open the application';
-	} else {
-		addEventListener('beforeinstallprompt', event => {
-			get('button-setup').setAttribute('class', get('button-setup').getAttribute('class').replace('btn btn-primary', 'btn btn-secondary mb-3'));
-			get('button-get').textContent = 'Install the application';
-			get('button-get').removeAttribute('href');
-			get('button-get').onclick = () => event.prompt();
-			show('button-get');
-		});
-	}
+	addEventListener('beforeinstallprompt', event => {
+		get('button-setup').setAttribute('class', get('button-setup').getAttribute('class').replace('btn btn-primary', 'btn btn-secondary mb-3'));
+		get('button-get').textContent = 'Install the application';
+		get('button-get').removeAttribute('href');
+		get('button-get').onclick = () => event.prompt();
+		show('button-get');
+	});
 }
 const country = get('country');
 const countrySearch = get('country-search');
