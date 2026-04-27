@@ -1,5 +1,5 @@
 if (location.host === 'costof.app') {
-    document.dispatchEvent(new CustomEvent('AppCostOf'));
+    document.dispatchEvent(new CustomEvent('AddonCostOf'));
     const set = control => {
         let option = {};
         option[control.getAttribute('id')] = control.value;
