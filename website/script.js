@@ -193,7 +193,7 @@ if (navigator.userAgentData && navigator.userAgentData.brands.some(b => b.brand 
 	get('button-get').setAttribute('href', 'https://addons.mozilla.org/en-US/firefox/addon/cost-of-driving-in-google-maps');
 }
 if (navigator.userAgentData && navigator.userAgentData.mobile) {
-	if ('getInstalledRelatedApps' in navigator && (await navigator.getInstalledRelatedApps()).length > 0) {
+	if (('getInstalledRelatedApps' in navigator) && ((await navigator.getInstalledRelatedApps()).length > 0)) {
 		get('button-get').textContent = 'Open the application';
 	} else {
 		addEventListener('beforeinstallprompt', event => {
