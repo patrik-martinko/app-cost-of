@@ -187,13 +187,11 @@ document.addEventListener('AppCostOf', () => {
 	get('button-get').textContent = 'Open Google Maps';
 	get('button-get').setAttribute('href', 'https://maps.google.com');
 });
-get('button-get').onclick = () => {
-	if (navigator.userAgentData && navigator.userAgentData.brands.some(b => b.brand === 'Chromium')) {
-		get('button-get').setAttribute('href', 'https://chrome.google.com/webstore/detail/cost-of-driving-in-google/glajpeclpoeodmfofkelgedjphkdgmie');
-	} else {
-		get('button-get').setAttribute('href', 'https://addons.mozilla.org/en-US/firefox/addon/cost-of-driving-in-google-maps');
-	}
-};
+if (navigator.userAgentData && navigator.userAgentData.brands.some(b => b.brand === 'Chromium')) {
+	get('button-get').setAttribute('href', 'https://chrome.google.com/webstore/detail/cost-of-driving-in-google/glajpeclpoeodmfofkelgedjphkdgmie');
+} else {
+	get('button-get').setAttribute('href', 'https://addons.mozilla.org/en-US/firefox/addon/cost-of-driving-in-google-maps');
+}
 if (navigator.userAgentData && navigator.userAgentData.mobile) {
 	addEventListener('beforeinstallprompt', event => {
 		get('button-setup').setAttribute('class', get('button-setup').getAttribute('class').replace('btn btn-primary', 'btn btn-secondary mb-3'));
