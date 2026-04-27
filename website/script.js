@@ -198,9 +198,10 @@ if (navigator.userAgentData && navigator.userAgentData.mobile) {
 	} else {
 		addEventListener('beforeinstallprompt', event => {
 			get('button-setup').setAttribute('class', get('button-setup').getAttribute('class').replace('btn btn-primary', 'btn btn-secondary mb-3'));
-			show('button-get');
 			get('button-get').textContent = 'Install the application';
+			get('button-get').removeAttribute('href');
 			get('button-get').onclick = () => event.prompt();
+			show('button-get');
 		});
 	}
 }
