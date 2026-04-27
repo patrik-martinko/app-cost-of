@@ -183,10 +183,7 @@ get('button-setup').onclick = () => {
 	show('button-get');
 	input(get('country'), true);
 };
-document.addEventListener('AppCostOf', () => {
-	hide('button-get');
-	get('account').setAttribute('class', get('account').getAttribute('class').replace('mt-3', 'mt-0'));
-});
+document.addEventListener('AppCostOf', () => get('button-get').setAttribute('href', 'https://maps.google.com').textContent = 'Open Google Maps');
 get('button-get').onclick = () => {
 	if (navigator.userAgentData && navigator.userAgentData.brands.some(b => b.brand === 'Chromium')) {
 		get('button-get').setAttribute('href', 'https://chrome.google.com/webstore/detail/cost-of-driving-in-google/glajpeclpoeodmfofkelgedjphkdgmie');
