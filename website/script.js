@@ -195,7 +195,7 @@ if (navigator.userAgentData && !navigator.userAgentData.mobile) {
 	}
 }
 if (navigator.userAgentData && navigator.userAgentData.mobile) {
-	if (('getInstalledRelatedApps' in navigator) && ((await navigator.getInstalledRelatedApps()).length > 0)) {
+	if (!!(await navigator.getInstalledRelatedApps?.())?.length) {
 		get('button-get').textContent = 'Open the application';
 	} else {
 		addEventListener('beforeinstallprompt', event => {
